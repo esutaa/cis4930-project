@@ -1,2 +1,2 @@
 install-dependencies:
-	sudo -H pip install pygame
+	sudo -H pip3 install pygame
