@@ -20,6 +20,9 @@ CLOCK = pygame.time.Clock()
 # Color hex values
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+GRAY = (128, 128, 128)
 
 # String constants
 GAME_NAME = 'Our Python Game'
+FONT = "freesansbold.ttf"
+
