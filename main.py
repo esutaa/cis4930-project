@@ -1,28 +1,14 @@
 #!/usr/bin/env python3
+"""
+Main module of the game.
+"""
+import pygame
+import constants as C
+from main_menu import main_menu
 
-import pygame as pg
-
-pg.init()
-
-gameDisplay = pg.display.set_mode((800, 600))
-pg.display.set_caption('Test Caption')
-
-clock = pg.time.Clock()
-
-
-crashed = False
-
-# This is the main game loop
-while not crashed:
-
-  for event in pg.event.get():
-    if event.type == pg.QUIT:
-      crashed = True
-    print(event)
-
-  pg.display.update()
-  clock.tick(60)
+pygame.init()
+pygame.display.set_caption(C.GAME_NAME)
 
 
-pg.quit()
-quit()
+if __name__ == '__main__':
+    main_menu()
