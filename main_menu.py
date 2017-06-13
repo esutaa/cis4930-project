@@ -12,25 +12,6 @@ TITLE_COORDS = (C.DISPLAY_WIDTH/2, C.DISPLAY_HEIGHT/2)
 OPTION_SIZE = 25
 
 
-def get_input(curr_option=0):
-    """
-    Check if player is pressing a button.
-    """
-
-    option_index = curr_option
-
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
-                if option_index > 0:
-                    option_index -= 1
-            elif event.key == pygame.K_DOWN:
-                if option_index < len(START_OPTIONS):
-                    option_index += 1
-
-    return option_index
-
-
 def draw_menu(highlight=START_OPTIONS[0]):
     """
     Draw the menu options for the game
@@ -62,12 +43,24 @@ def main_menu():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    if selected_option > 0:
+                        selected_option -= 1
+                elif event.key == pygame.K_DOWN:
+                    if selected_option < len(START_OPTIONS):
+                        selected_option += 1
+                elif event.key == pygame.K_RETURN:
+                    #TODO: add true menu functionality
+                    print("Current option is {}."\
+                            .format(START_OPTIONS[selected_option]))
+                elif event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    quit()
 
         C.GAME_DISPLAY.fill(C.WHITE)
 
         draw_text(C.GAME_NAME, C.BLACK, TITLE_SIZE, TITLE_COORDS)
-        
-        selected_option = get_input(selected_option)
 
         draw_menu(START_OPTIONS[selected_option])
 
