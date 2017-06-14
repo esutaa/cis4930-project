@@ -13,5 +13,5 @@ python3 start.py
 ```
 or
 ```
-python3 start.py
+./start.py
 ```
