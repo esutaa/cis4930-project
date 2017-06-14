@@ -48,7 +48,7 @@ def main_menu():
                     if selected_option > 0:
                         selected_option -= 1
                 elif event.key == pygame.K_DOWN:
-                    if selected_option < len(START_OPTIONS):
+                    if selected_option < (len(START_OPTIONS) - 1):
                         selected_option += 1
                 elif event.key == pygame.K_RETURN:
                     if START_OPTIONS[selected_option] == "Start":
