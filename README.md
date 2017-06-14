@@ -5,3 +5,13 @@ Run:
 ```
 make install-dependencies
 ```
+
+## Running the Game
+Run
+```
+python3 start.py
+```
+or
+```
+python3 start.py
+```
