@@ -51,9 +51,11 @@ def main_menu():
                     if selected_option < len(START_OPTIONS):
                         selected_option += 1
                 elif event.key == pygame.K_RETURN:
-                    #TODO: add true menu functionality
-                    print("Current option is {}."\
-                            .format(START_OPTIONS[selected_option]))
+                    if START_OPTIONS[selected_option] == "Start":
+                        return
+                    elif START_OPTIONS[selected_option] == "Exit":
+                        pygame.quit()
+                        quit()
                 elif event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     quit()
