@@ -10,7 +10,10 @@ class Room(object):
     """
     def __init__(self, room_file):
 
+        self.rm_structure = list() # Will be a list of lists
+
         # Open the room file and parse the contents
+        row = list()
         with open(room_file) as room_text:
             in_comment = False
             for line in room_text:
@@ -27,13 +30,19 @@ class Room(object):
                     else:
                         for char in line:
                             if char == 'x':
-                                print('x', end="")
+                                row.append(Wall())
                             elif char == '.':
-                                print('.', end="")
+                                row.append(Floor())
                             elif char == '0':
-                                print('0', end="")
-                        print('')
+                                row.append(Hole())
+                    self.rm_structure.append(row)
+                    row = []
 
+    def __str__(self):
+        for i in self.rm_structure:
+            for j in i:
+                print(j, end="")
+            print("")
 
 class Tile(object):
     """
@@ -55,6 +64,12 @@ class Wall(Tile):
     def __init__(self):
         super(Wall, self).__init__()
 
+    def __str__(self):
+        """
+        For debug purposes
+        """
+        return 'x'
+
 
 class Floor(Tile):
     """
@@ -67,6 +82,12 @@ class Floor(Tile):
     def __init__(self):
         super(Floor, self).__init__()
 
+    def __str__(self):
+        """
+        For debug purposes
+        """
+        return '.'
+
 
 class Hole(Tile):
     """
@@ -78,3 +99,10 @@ class Hole(Tile):
 
     def __init__(self):
         super(Hole, self).__init__()
+
+    def __str__(self):
+        """
+        For debug purposes
+        """
+        return '0'
+
