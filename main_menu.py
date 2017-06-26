@@ -44,10 +44,10 @@ def main_menu():
                 pygame.quit()
                 quit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
+                if event.key == pygame.K_UP or event.key == pygame.K_w:
                     if selected_option > 0:
                         selected_option -= 1
-                elif event.key == pygame.K_DOWN:
+                elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     if selected_option < (len(START_OPTIONS) - 1):
                         selected_option += 1
                 elif event.key == pygame.K_RETURN:
