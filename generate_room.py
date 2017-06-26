@@ -33,3 +33,48 @@ class Room(object):
                             elif char == '0':
                                 print('0', end="")
                         print('')
+
+
+class Tile(object):
+    """
+    Parent class for the different kinds of tiles that may be in the game
+    """
+
+    def __init__(self):
+        pass
+
+
+class Wall(Tile):
+    """
+    Basic wall objects. Has these properties:
+    - Collides with everything
+    - Does no damage
+    - Kills projectiles
+    """
+
+    def __init__(self):
+        super(Wall, self).__init__()
+
+
+class Floor(Tile):
+    """
+    Basic floor objects. Has these properties:
+    - No collision, does not interact with sprites
+    - Drawn under everything
+    - Does no damage
+    """
+
+    def __init__(self):
+        super(Floor, self).__init__()
+
+
+class Hole(Tile):
+    """
+    Basic hole in the floor objects. Has these properties:
+    - No collision but does interact with sprites
+    - Drawn under everything
+    - Does damage
+    """
+
+    def __init__(self):
+        super(Hole, self).__init__()
