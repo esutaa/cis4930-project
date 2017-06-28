@@ -3,7 +3,7 @@ This module controls the main control flow of the game.
 """
 import pygame
 import constants as C
-#from resources import Resources
+import pause_menu
 
 
 def game_loop(res):
@@ -46,9 +46,15 @@ def game_loop(res):
                         res.player.x_change += C.SPRITE_BASE_SPEED
 
                 elif event.key == pygame.K_RETURN:
-                    print("foo")
+
+                    # Attack or something, dunno yet
+                    pass
+
                 elif event.key == pygame.K_ESCAPE:
-                    print("foo")
+
+                    # Pause the game
+                    pause_menu.pause_menu(C.GAME_DISPLAY)
+
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
 

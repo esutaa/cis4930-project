@@ -21,9 +21,15 @@ CLOCK = pygame.time.Clock()
 
 
 # Color hex values
-BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-GRAY = (128, 128, 128)
+
+TITLE_PRIMARY = (0, 0, 0)
+TITLE_SECONDARY = (128, 128, 128)
+
+PAUSE_TINT = (127, 127, 127)
+PAUSE_PRIMARY = (215, 227, 247)
+PAUSE_SECONDARY = (106, 112, 122)
+
 ALPHA_COLOR = (255, 0, 195) # Pink background color for transparency
 
 # String constants
