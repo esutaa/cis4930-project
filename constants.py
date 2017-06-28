@@ -30,12 +30,22 @@ ALPHA_COLOR = (255, 0, 195) # Pink background color for transparency
 GAME_NAME = 'Our Python Game'
 FONT = "freesansbold.ttf"
 
-# Image constants
-PLAYER_SPRITE_WIDTH = 32
-PLAYER_SPRITE_HEIGHT = 32
 
 # Gameplay constants
 SPRITE_BASE_SPEED = 5
 
-# Sprite paths
+
+# Image dimension constants
+PLAYER_SPRITE_WIDTH = 32
+PLAYER_SPRITE_HEIGHT = 32
+
+TILE_WIDTH = 32
+TILE_HEIGHT = 32
+
+
+# Image resource paths
 S_PLAYER = "resources/sprites/s_player.png"
+
+T_FLOOR = "resources/tiles/t_floor.png"
+T_HOLE = "resources/tiles/t_hole.png"
+T_WALL = "resources/tiles/t_wall.png"

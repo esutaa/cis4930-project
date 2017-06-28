@@ -3,6 +3,8 @@ This module will create a room object based on some text template that
 it's given.
 """
 
+import pygame
+import constants as C
 
 class Room(object):
     """
@@ -14,9 +16,14 @@ class Room(object):
 
         # Open the room file and parse the contents
         row = list()
+
+        x_coord = 0 
+        y_coord = 0
+
         with open(room_file) as room_text:
             in_comment = False
             for line in room_text:
+                print("Room.__init__(): creating tile with coords {},{}".format(x_coord, y_coord))
                 if line[:2] == '$$':
                     if in_comment is False:
                         in_comment = True
@@ -30,13 +37,23 @@ class Room(object):
                     else:
                         for char in line:
                             if char == 'x':
-                                row.append(Wall())
+                                row.append(Wall(x=x_coord, y=y_coord))
                             elif char == '.':
-                                row.append(Floor())
+                                row.append(Floor(x=x_coord, y=y_coord))
                             elif char == '0':
-                                row.append(Hole())
+                                row.append(Hole(x=x_coord, y=y_coord))
+                            x_coord += 32
                     self.rm_structure.append(row)
                     row = []
+                    x_coord = 0
+                y_coord += 32
+
+        # Draw the room tiles to a background surface stored by the room object
+        self.background = pygame.Surface((C.GAME_DISPLAY.get_size()))
+        for row in self.rm_structure:
+            for column in row:
+                column.draw(self.background)
+
 
     def __str__(self):
         for i in self.rm_structure:
@@ -49,8 +66,8 @@ class Tile(object):
     Parent class for the different kinds of tiles that may be in the game
     """
 
-    def __init__(self):
-        pass
+    def __init__(self, x=0, y=0):
+        self.coords = (x, y)
 
 
 class Wall(Tile):
@@ -61,14 +78,20 @@ class Wall(Tile):
     - Kills projectiles
     """
 
-    def __init__(self):
-        super(Wall, self).__init__()
+    image = pygame.Surface((C.TILE_WIDTH, C.TILE_HEIGHT))
+    image = pygame.image.load(C.T_WALL)
+
+    def __init__(self, x=0, y=0):
+        super(Wall, self).__init__(x, y)
 
     def __str__(self):
         """
         For debug purposes
         """
         return 'x'
+
+    def draw(self, background):
+        background.blit(Wall.image, self.coords)
 
 
 class Floor(Tile):
@@ -79,14 +102,20 @@ class Floor(Tile):
     - Does no damage
     """
 
-    def __init__(self):
-        super(Floor, self).__init__()
+    image = pygame.Surface((C.TILE_WIDTH, C.TILE_HEIGHT))
+    image = pygame.image.load(C.T_FLOOR)
+
+    def __init__(self, x=0, y=0):
+        super(Floor, self).__init__(x, y)
 
     def __str__(self):
         """
         For debug purposes
         """
         return '.'
+
+    def draw(self, background):
+        background.blit(Floor.image, self.coords)
 
 
 class Hole(Tile):
@@ -97,8 +126,11 @@ class Hole(Tile):
     - Does damage
     """
 
-    def __init__(self):
-        super(Hole, self).__init__()
+    image = pygame.Surface((C.TILE_WIDTH, C.TILE_HEIGHT))
+    image = pygame.image.load(C.T_HOLE)
+
+    def __init__(self, x=0, y=0):
+        super(Hole, self).__init__(x, y)
 
     def __str__(self):
         """
@@ -106,3 +138,5 @@ class Hole(Tile):
         """
         return '0'
 
+    def draw(self, background):
+        background.blit(Hole.image, self.coords)

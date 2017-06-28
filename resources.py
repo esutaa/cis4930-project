@@ -6,6 +6,7 @@ differences between Python 2 and 3 classes!
 
 import pygame
 import constants as C
+import generate_room
 
 class Resources:
     """
@@ -24,6 +25,10 @@ class Resources:
         # Instantiate sprites
         self.player = PlayerCharacter((0, 0))
 
+        # Create rooms
+        # TODO: make this more robust, right now it only loads the one test room
+        self.rooms = list()
+        self.rooms.append(generate_room.Room("resources/maps/m_test.txt"))
 
 
 class PlayerCharacter(pygame.sprite.Sprite):
