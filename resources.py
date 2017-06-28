@@ -39,7 +39,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
 
     def __init__(self, startpos):
         pygame.sprite.Sprite.__init__(self, self.groups)
-        
+
         self.pos = startpos
         # Track changes in x, y position
         self.x_change = 0
