@@ -3,7 +3,8 @@ This is the template for how rooms might be generated in-game.
 With the current display resolution of 800x600, the dimensions of each room are
 as follows:
 800/32 = 25 squares wide, and
-600/32 = 18 squares high.
+600/32 = about 18 squares high. Probably want to figure out some way to use the
+excess 24 pixels.
 Note that I'm assuming that all of our sprites will be 32x32 pixels. This may
 change in the future.
 
@@ -19,16 +20,16 @@ This is completely arbitrary and I'm only assigning them right now so that I can
 prototype the room generation process.
 $$
 xxxxxxxxxxxxxxxxxxxxxxxxx
+x000.000................x
+x.0...0.................x
+x.0...0.................x
+x000..0.................x
 x.......................x
-x.......................x
-x.....00................x
-x.....00................x
-x.......................x
-x.......................x
-x.......................x
-x.......................x
-x.......................x
-x.......................x
+x0.0.0.000.00...0.0.000.x
+x0.0.0.0.0.0.0..0.0.0...x
+x0.0.0.0.0.000..00..000.x
+x0.0.0.0.0.0.0..0.0...0.x
+x.0.0..000.0.0..0.0.000.x
 x.......................x
 x.......................x
 x.......................x
