@@ -22,9 +22,9 @@ def draw_menu(highlight=START_OPTIONS[0]):
 
     for option in START_OPTIONS:
         if option == highlight:
-            color = C.BLACK
+            color = C.TITLE_PRIMARY
         else:
-            color = C.GRAY
+            color = C.TITLE_SECONDARY
 
         draw_text(option, color, OPTION_SIZE, (opt_x, opt_y))
         opt_y += OPTION_SIZE + 10
@@ -62,7 +62,7 @@ def main_menu():
 
         C.GAME_DISPLAY.fill(C.WHITE)
 
-        draw_text(C.GAME_NAME, C.BLACK, TITLE_SIZE, TITLE_COORDS)
+        draw_text(C.GAME_NAME, C.TITLE_PRIMARY, TITLE_SIZE, TITLE_COORDS)
 
         draw_menu(START_OPTIONS[selected_option])
 
