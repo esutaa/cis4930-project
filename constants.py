@@ -44,7 +44,8 @@ TILE_HEIGHT = 32
 
 
 # Image resource paths
-S_PLAYER = "resources/sprites/s_player.png"
+#S_PLAYER = "resources/sprites/s_player.png"
+S_PLAYER = "resources/sprites/s_player_noBG.png"
 
 T_FLOOR = "resources/tiles/t_floor.png"
 T_HOLE = "resources/tiles/t_hole.png"

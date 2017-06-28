@@ -74,7 +74,9 @@ def game_loop(res):
 
         res.g_all_sprites.clear(C.GAME_DISPLAY, C.BACKGROUND)
         res.g_player_sprites.update()
+
         res.g_all_sprites.draw(C.GAME_DISPLAY)
+        res.g_player_sprites.draw(C.GAME_DISPLAY)
 
         pygame.display.update()
         C.CLOCK.tick(60)

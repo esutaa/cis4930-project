@@ -20,7 +20,7 @@ class Resources:
         self.g_player_sprites = pygame.sprite.Group()
 
         # Assign groups to sprites
-        PlayerCharacter.groups = self.g_all_sprites, self.g_player_sprites
+        PlayerCharacter.groups = self.g_player_sprites
 
         # Instantiate sprites
         self.player = PlayerCharacter((0, 0))
@@ -37,10 +37,10 @@ class PlayerCharacter(pygame.sprite.Sprite):
     """
 
     # Data that's shared between all PlayerSprite objects
-    image = pygame.Surface((C.PLAYER_SPRITE_WIDTH,C.PLAYER_SPRITE_HEIGHT))
+    #image = pygame.Surface((C.PLAYER_SPRITE_WIDTH,C.PLAYER_SPRITE_HEIGHT))
     image = pygame.image.load(C.S_PLAYER)
-    image.set_colorkey(C.ALPHA_COLOR)
-    image = image.convert_alpha()
+    #image.set_colorkey(C.ALPHA_COLOR)
+    #image = image.convert_alpha()
 
     def __init__(self, startpos):
         pygame.sprite.Sprite.__init__(self, self.groups)

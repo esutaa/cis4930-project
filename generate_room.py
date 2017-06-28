@@ -23,7 +23,6 @@ class Room(object):
         with open(room_file) as room_text:
             in_comment = False
             for line in room_text:
-                print("Room.__init__(): creating tile with coords {},{}".format(x_coord, y_coord))
                 if line[:2] == '$$':
                     if in_comment is False:
                         in_comment = True
@@ -36,6 +35,7 @@ class Room(object):
                         continue
                     else:
                         for char in line:
+                            print("Room.__init__(): creating tile with coords {},{}".format(x_coord, y_coord))
                             if char == 'x':
                                 row.append(Wall(x=x_coord, y=y_coord))
                             elif char == '.':
