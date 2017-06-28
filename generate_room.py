@@ -1,6 +1,21 @@
 """
-This module will create a room object based on some text template that
-it's given.
+This module defines a few classes, to be used 
+primarily by the Resources class when its initialized.
+
+Room: takes a file path that is a blueprint for
+a room and creates it out of actual tile objects to be
+drawn to the game screen. It's generic enough that we
+could theoretically generate rooms at random and pass
+them into this function.
+
+Tile: a generic superclass for the various different
+tile classes. Not much use right now but I created it
+this way just in case general tile features would be 
+needed at a later date.
+
+Wall, Floor, Hole: three classes for the three different
+tiles that I've created. In the future, each tile type
+would be given its own subclass and functionality.
 """
 
 import pygame

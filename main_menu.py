@@ -1,5 +1,14 @@
 """
 This module facilitates the drawing and looping of the main menu.
+
+This is the first thing that gets called from start.py. Either the
+main_menu() returns to start.py after choosing "Start", or the
+entire game is terminated.
+
+Menu options are drawn to the screen dynamically, so in order to 
+add new items, it should be as simple as adding a new entry to
+START_OPTIONS, and creating a case in the event loop that checks
+to see if the currently selected option is this new option.
 """
 import pygame
 import constants as C

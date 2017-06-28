@@ -1,5 +1,11 @@
 """
 This module contains functions to facilitate common actions.
+
+I made it because some things in pygame are really common tasks,
+and I didn't want to have to write them over and over.
+
+Might not be that useful in the end, though. Might be better to 
+refactor this code at a later date.
 """
 
 import pygame

@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """
 Main module of the game.
+
+Pretty simple, just facilitates transitions
+from one game state to another.
 """
 import pygame
 import constants as C

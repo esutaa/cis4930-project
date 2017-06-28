@@ -1,6 +1,8 @@
 '''
 This file keeps all of the constant variables in one
 place.
+My goal was to make a lot of information centralized 
+so that it could be changed easily and universally.
 PyLint demands that I put all globals in uppercase.
 '''
 import pygame

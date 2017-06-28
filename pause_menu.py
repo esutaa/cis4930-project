@@ -1,5 +1,12 @@
 """
-This module facilitates the drawing and looping of the pause menu
+This module facilitates the drawing and looping of the pause menu.
+
+This is very similar to the main menu, so it might be a good idea to
+merge them into a generic class or something at some point.
+
+This module is called from game_loop whenever the player presses the
+ESC key. It will either return to the game loop where it had left, or
+it will exit the game.
 """
 import pygame
 import constants as C

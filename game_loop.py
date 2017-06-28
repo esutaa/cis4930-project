@@ -1,5 +1,12 @@
 """
 This module controls the main control flow of the game.
+
+start.py calls this module after running the main_menu
+module and after generating a resource object.
+
+This module handles things like drawing the room, player
+movement, enemy movement, attacking, calling the pause
+menu, etc.
 """
 import pygame
 import constants as C

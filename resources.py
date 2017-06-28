@@ -1,7 +1,14 @@
 """
 Module to contain the Resource class.
-NOTE: this is a Python 3 class! Please be aware that there may be important
-differences between Python 2 and 3 classes!
+
+The general idea behind this class is that it holds all
+of the resources that the game_loop will need:
+    - Sprites
+    - Rooms
+    - Sounds
+and whatever else. If we wanted these to be randomly generated,
+I thought it made sense to create them all as part of one
+structure that's used by the game loop generically.
 """
 
 import pygame
