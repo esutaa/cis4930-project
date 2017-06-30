@@ -57,11 +57,11 @@ class Room(object):
                                 row.append(Floor(x=x_coord, y=y_coord))
                             elif char == '0':
                                 row.append(Hole(x=x_coord, y=y_coord))
-                            x_coord += 32
+                            x_coord += C.TILE_WIDTH
                     self.rm_structure.append(row)
                     row = []
                     x_coord = 0
-                y_coord += 32
+                y_coord += C.TILE_HEIGHT
 
         # Draw the room tiles to a background surface stored by the room object
         self.background = pygame.Surface((C.GAME_DISPLAY.get_size()))
