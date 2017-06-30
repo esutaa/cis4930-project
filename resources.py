@@ -54,8 +54,6 @@ class PlayerCharacter(pygame.sprite.Sprite):
 
         self.pos = startpos
         # Track changes in x, y position
-        self.x_change = 0
-        self.y_change = 0
 
         self.sprite = PlayerCharacter.image
         self.rect = self.sprite.get_rect()
@@ -67,5 +65,4 @@ class PlayerCharacter(pygame.sprite.Sprite):
         Updates on the sprite to run
         """
         #self.rect.center = self.pos
-        self.pos = (self.pos[0]+self.x_change, self.pos[1]+self.y_change)
         self.rect.center = self.pos

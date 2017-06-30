@@ -23,65 +23,44 @@ def game_loop(res):
     loop = True
 
     while loop:
+
+        '''keys is a dict with entries of {pygame.K_<key>, boolean}
+        to tell whether any key is held down each frame'''
+        keys = pygame.key.get_pressed()
+
+        #player movement
+        #check if a key is being held, update the player.pos tuple
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            res.player.pos = (res.player.pos[0]+C.SPRITE_BASE_SPEED, res.player.pos[1])
+        
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+            res.player.pos = (res.player.pos[0]-C.SPRITE_BASE_SPEED, res.player.pos[1])
+        
+        if keys[pygame.K_UP] or keys[pygame.K_w]:
+            res.player.pos = (res.player.pos[0], res.player.pos[1]-C.SPRITE_BASE_SPEED)
+        
+        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
+            res.player.pos = (res.player.pos[0], res.player.pos[1]+C.SPRITE_BASE_SPEED)
+        
+
+        '''
+        depending on how we want them to be handled in the game, keyboard
+        controls besides those relating to movement may need to be put in
+        the event loop
+        i.e. swing a sword could be detected by key_down event and have an
+        attack speed related cooldown, rather then checking if the key is held
+        '''
+        if keys[pygame.K_RETURN]:
+            pass
+        if keys[pygame.K_ESCAPE]:
+            pause_menu.pause_menu(C.GAME_DISPLAY)
+
+        #check for other events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP or event.key == pygame.K_w:
 
-                    # Player movement
-                    if res.player.y_change == 0:
-                        res.player.y_change -= C.SPRITE_BASE_SPEED
-
-                elif event.key == pygame.K_LEFT or event.key == pygame.K_a:
-
-                    # Player movement
-                    if res.player.x_change == 0:
-                        res.player.x_change -= C.SPRITE_BASE_SPEED
-
-                elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
-
-                    # Player movement
-                    if res.player.y_change == 0:
-                        res.player.y_change += C.SPRITE_BASE_SPEED
-
-                elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-
-                    # Player movement
-                    if res.player.x_change == 0:
-                        res.player.x_change += C.SPRITE_BASE_SPEED
-
-                elif event.key == pygame.K_RETURN:
-
-                    # Attack or something, dunno yet
-                    pass
-
-                elif event.key == pygame.K_ESCAPE:
-
-                    # Pause the game
-                    pause_menu.pause_menu(C.GAME_DISPLAY)
-
-            elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_UP or event.key == pygame.K_w:
-
-                    # Player movement
-                    res.player.y_change = 0
-
-                elif event.key == pygame.K_LEFT or event.key == pygame.K_a:
-
-                    # Player movement
-                    res.player.x_change = 0
-
-                elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
-
-                    # Player movement
-                    res.player.y_change = 0
-
-                elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-
-                    # Player movement
-                    res.player.x_change = 0
 
         C.GAME_DISPLAY.blit(res.rooms[0].background, (0, 0))
 
