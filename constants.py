@@ -6,6 +6,7 @@ so that it could be changed easily and universally.
 PyLint demands that I put all globals in uppercase.
 '''
 import pygame
+import os # For getting the number of map files in a directory
 
 
 # Display properties
@@ -50,6 +51,10 @@ PLAYER_SPRITE_HEIGHT = 32
 TILE_WIDTH = 32
 TILE_HEIGHT = 32
 
+
+# Room generation constants
+ROOM_FILES_PATH = "resources/maps/."
+NUM_OF_ROOMS = len(os.listdir(ROOM_FILES_PATH))
 
 # Image resource paths
 #S_PLAYER = "resources/sprites/s_player.png"

@@ -21,6 +21,10 @@ def game_loop(res):
     C.GAME_DISPLAY.blit(res.rooms[0].background, (0, 0))
 
     loop = True
+    up_pressed = False
+    down_pressed = False
+    left_pressed = False
+    right_pressed = False
 
     while loop:
 

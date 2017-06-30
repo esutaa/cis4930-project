@@ -37,6 +37,12 @@ class Resources:
         self.rooms = list()
         self.rooms.append(generate_room.Room("resources/maps/m_test.txt"))
 
+    def regen_floor():
+        """
+        Create a new random floor
+        """
+        pass
+
 
 class PlayerCharacter(pygame.sprite.Sprite):
     """
