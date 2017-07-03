@@ -30,7 +30,7 @@ class Resources:
         PlayerCharacter.groups = self.g_player_sprites
 
         # Instantiate sprites
-        self.player = PlayerCharacter((0, 0))
+        self.player = PlayerCharacter((C.DISPLAY_WIDTH/2, C.DISPLAY_HEIGHT/2))
 
         # Create rooms
         # TODO: make this more robust, right now it only loads the one test room
