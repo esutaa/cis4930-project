@@ -25,9 +25,10 @@ class Resources:
         # Create sprite groups
         self.g_all_sprites = pygame.sprite.Group()
         self.g_player_sprites = pygame.sprite.Group()
+        self.g_collidable_sprites = pygame.sprite.Group()
 
         # Assign groups to sprites
-        PlayerCharacter.groups = self.g_player_sprites
+        PlayerCharacter.groups = self.g_player_sprites, self.g_collidable_sprites
 
         # Instantiate sprites
         self.player = PlayerCharacter((C.DISPLAY_WIDTH/2, C.DISPLAY_HEIGHT/2))
