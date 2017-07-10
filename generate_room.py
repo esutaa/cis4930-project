@@ -31,7 +31,7 @@ class Room(object):
         self.g_above_tiles = pygame.sprite.Group()
         self.g_below_tiles = pygame.sprite.Group()
 
-        Wall.groups = self.g_above_tiles
+        Wall.groups = self.g_above_tiles, self.g_event_tiles
         Floor.groups = self.g_below_tiles
         Hole.groups = self.g_below_tiles, self.g_event_tiles
 
