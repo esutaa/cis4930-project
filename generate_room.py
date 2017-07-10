@@ -27,10 +27,17 @@ class Room(object):
     """
     def __init__(self, room_file):
 
-        self.rm_structure = list() # Will be a list of lists
+        self.g_event_tiles = pygame.sprite.Group()
+        self.g_above_tiles = pygame.sprite.Group()
+        self.g_below_tiles = pygame.sprite.Group()
 
-        # Open the room file and parse the contents
-        row = list()
+        Wall.groups = self.g_above_tiles
+        Floor.groups = self.g_below_tiles
+        Hole.groups = self.g_below_tiles, self.g_event_tiles
+
+        self.wall_list = list()
+        self.floor_list = list()
+        self.hole_list = list()
 
         x_coord = 0 
         y_coord = 0
@@ -52,32 +59,14 @@ class Room(object):
                         for char in line:
                             print("Room.__init__(): creating tile with coords {},{}".format(x_coord, y_coord))
                             if char == 'x':
-                                row.append(Wall(x=x_coord, y=y_coord))
+                                self.wall_list.append(Wall(x=x_coord, y=y_coord))
                             elif char == '.':
-                                row.append(Floor(x=x_coord, y=y_coord))
+                                self.floor_list.append(Floor(x=x_coord, y=y_coord))
                             elif char == '0':
-                                row.append(Hole(x=x_coord, y=y_coord))
+                                self.hole_list.append(Hole(x=x_coord, y=y_coord))
                             x_coord += C.TILE_WIDTH
-                    self.rm_structure.append(row)
-                    row = []
                     x_coord = 0
                 y_coord += C.TILE_HEIGHT
-
-        # Draw the room tiles to a background surface stored by the room object
-        self.floor = pygame.Surface((C.GAME_DISPLAY.get_size()))
-        self.walls = pygame.Surface((C.GAME_DISPLAY.get_size()))
-
-        for row in self.rm_structure:
-            for column in row:
-                if type(column) is Wall:
-                    column.draw(self.walls)
-                else:
-                    column.draw(self.floor)
-
-        # Mask out the parts of the wall surface that aren't walls
-        self.walls.convert_alpha()
-        self.walls.set_colorkey((0, 0, 0))
-
 
     def __str__(self):
         for i in self.rm_structure:
@@ -85,16 +74,8 @@ class Room(object):
                 print(j, end="")
             print("")
 
-class Tile(object):
-    """
-    Parent class for the different kinds of tiles that may be in the game
-    """
 
-    def __init__(self, x=0, y=0):
-        self.coords = (x, y)
-
-
-class Wall(Tile):
+class Wall(pygame.sprite.Sprite):
     """
     Basic wall objects. Has these properties:
     - Collides with everything
@@ -106,7 +87,14 @@ class Wall(Tile):
     image = pygame.image.load(C.T_WALL)
 
     def __init__(self, x=0, y=0):
-        super(Wall, self).__init__(x, y)
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.sprite = Wall.image
+
+        self.pos = (x + C.TILE_WIDTH/2, y + C.TILE_HEIGHT/2)
+        self.rect = self.sprite.get_rect()
+        self.rect.center = self.pos
+        self.radius = C.TILE_WIDTH / 2
 
     def __str__(self):
         """
@@ -114,11 +102,11 @@ class Wall(Tile):
         """
         return 'x'
 
-    def draw(self, background):
-        background.blit(Wall.image, self.coords)
+    def update(self):
+        pass
 
 
-class Floor(Tile):
+class Floor(pygame.sprite.Sprite):
     """
     Basic floor objects. Has these properties:
     - No collision, does not interact with sprites
@@ -130,7 +118,14 @@ class Floor(Tile):
     image = pygame.image.load(C.T_FLOOR)
 
     def __init__(self, x=0, y=0):
-        super(Floor, self).__init__(x, y)
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.sprite = Floor.image
+
+        self.pos = (x + C.TILE_WIDTH/2, y + C.TILE_HEIGHT/2)
+        self.rect = self.sprite.get_rect()
+        self.rect.center = self.pos
+        self.radius = C.TILE_WIDTH / 2
 
     def __str__(self):
         """
@@ -138,11 +133,10 @@ class Floor(Tile):
         """
         return '.'
 
-    def draw(self, background):
-        background.blit(Floor.image, self.coords)
+    def update(self):
+        pass
 
-
-class Hole(Tile):
+class Hole(pygame.sprite.Sprite):
     """
     Basic hole in the floor objects. Has these properties:
     - No collision but does interact with sprites
@@ -154,7 +148,14 @@ class Hole(Tile):
     image = pygame.image.load(C.T_HOLE)
 
     def __init__(self, x=0, y=0):
-        super(Hole, self).__init__(x, y)
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.sprite = Hole.image
+
+        self.pos = (x + C.TILE_WIDTH/2, y + C.TILE_HEIGHT/2)
+        self.rect = self.sprite.get_rect()
+        self.rect.center = self.pos
+        self.radius = C.TILE_WIDTH / 2
 
     def __str__(self):
         """
@@ -162,5 +163,5 @@ class Hole(Tile):
         """
         return '0'
 
-    def draw(self, background):
-        background.blit(Hole.image, self.coords)
+    def update(self):
+        pass

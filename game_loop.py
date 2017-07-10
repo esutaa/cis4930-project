@@ -18,9 +18,6 @@ def game_loop(res):
     Manager function that's going to be called from the start.py module.
     """
 
-    C.GAME_DISPLAY.blit(res.rooms[0].floor, (0, 0))
-    C.GAME_DISPLAY.blit(res.rooms[0].walls, (0, 0))
-
     loop = True
 
     while loop:
@@ -62,8 +59,9 @@ def game_loop(res):
                 pygame.quit()
                 quit()
 
-
-        C.GAME_DISPLAY.blit(res.rooms[0].floor, (0, 0))
+        res.rooms[0].g_below_tiles.clear(C.GAME_DISPLAY, C.BACKGROUND)
+        res.rooms[0].g_below_tiles.update()
+        res.rooms[0].g_below_tiles.draw(C.GAME_DISPLAY)
 
         res.g_all_sprites.clear(C.GAME_DISPLAY, C.BACKGROUND)
         res.g_player_sprites.update()
@@ -71,7 +69,9 @@ def game_loop(res):
         res.g_all_sprites.draw(C.GAME_DISPLAY)
         res.g_player_sprites.draw(C.GAME_DISPLAY)
 
-        C.GAME_DISPLAY.blit(res.rooms[0].walls, (0, 0))
+        res.rooms[0].g_above_tiles.clear(C.GAME_DISPLAY, C.BACKGROUND)
+        res.rooms[0].g_above_tiles.update()
+        res.rooms[0].g_above_tiles.draw(C.GAME_DISPLAY)
 
         pygame.display.update()
         C.CLOCK.tick(60)

@@ -70,5 +70,4 @@ class PlayerCharacter(pygame.sprite.Sprite):
         """
         Updates on the sprite to run
         """
-        #self.rect.center = self.pos
         self.rect.center = self.pos
