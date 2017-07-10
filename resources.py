@@ -61,8 +61,8 @@ class Resources:
                 pass
             #Create and connect one room
                 #determine which of available exists will be used
-            pass
-
+            generatedRooms = floorSize
+        '''
         #generatedRooms = floorSize
         #determine an available exit in last room to be the Boss room
         '''
