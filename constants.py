@@ -53,8 +53,11 @@ TILE_HEIGHT = 32
 
 
 # Room generation constants
+FIRST_ROOM = "resources/maps/m_test.txt" #this will need to be changed
 ROOM_FILES_PATH = "resources/maps/."
 NUM_OF_ROOMS = len(os.listdir(ROOM_FILES_PATH))
+FLOOR_MULT = [0,3]	#needs values added for however many floors are possible
+FLOOR_CONST = 2
 
 # Image resource paths
 #S_PLAYER = "resources/sprites/s_player.png"

@@ -12,6 +12,7 @@ structure that's used by the game loop generically.
 """
 
 import pygame
+import random as R
 import constants as C
 import generate_room
 
@@ -32,16 +33,39 @@ class Resources:
         # Instantiate sprites
         self.player = PlayerCharacter((0, 0))
 
-        # Create rooms
+        # Setup rooms
+        # The first floor of every run is the same
         # TODO: make this more robust, right now it only loads the one test room
         self.rooms = list()
-        self.rooms.append(generate_room.Room("resources/maps/m_test.txt"))
+        self.rooms.append(generate_room.Room(C.FIRST_ROOM))
+        self.currentFloor = 1
+        self.regen_floor()
 
-    def regen_floor():
-        """
-        Create a new random floor
-        """
-        pass
+        # Generate the current floor
+    def regen_floor(self):
+        if self.currentFloor > 1:
+            # create the appropriate first room for whichever floor
+            pass
+
+        #floorSize = FC * FM +/- rand[0, FM)
+        floorSize = C.FLOOR_CONST * C.FLOOR_MULT[self.currentFloor]
+        floorSize += (-1 + R.randrange(0,3,2)) * R.randrange(C.FLOOR_MULT[self.currentFloor])
+        
+
+        #WIP algorithm
+        generatedRooms = 0
+        while generatedRooms < floorSize:
+            if (floorSize-generatedRooms) % 2 == 0: #even number of rooms left
+                #determine if room will have 2 exits or 1
+                #if 2, then create and connect one room (see below)
+                pass
+            #Create and connect one room
+                #determine which of available exists will be used
+            pass
+
+        #generatedRooms = floorSize
+        #determine an available exit in last room to be the Boss room
+        '''
 
 
 class PlayerCharacter(pygame.sprite.Sprite):

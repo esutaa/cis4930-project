@@ -29,6 +29,12 @@ class Room(object):
 
         self.rm_structure = list() # Will be a list of lists
 
+        #possibly entrances and exists from a room object
+        self.left_available = True
+        self.top_available = True
+        self.right_available = True
+        self.bottom_available = True
+
         # Open the room file and parse the contents
         row = list()
 
