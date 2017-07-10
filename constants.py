@@ -25,6 +25,7 @@ CLOCK = pygame.time.Clock()
 
 # Color hex values
 WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
 
 TITLE_PRIMARY = (0, 0, 0)
 TITLE_SECONDARY = (128, 128, 128)
