@@ -31,7 +31,7 @@ class Resources:
         PlayerCharacter.groups = self.g_player_sprites
 
         # Instantiate sprites
-        self.player = PlayerCharacter((0, 0))
+        self.player = PlayerCharacter((C.DISPLAY_WIDTH/2, C.DISPLAY_HEIGHT/2))
 
         # Setup rooms
         # The first floor of every run is the same

@@ -70,10 +70,19 @@ class Room(object):
                 y_coord += C.TILE_HEIGHT
 
         # Draw the room tiles to a background surface stored by the room object
-        self.background = pygame.Surface((C.GAME_DISPLAY.get_size()))
+        self.floor = pygame.Surface((C.GAME_DISPLAY.get_size()))
+        self.walls = pygame.Surface((C.GAME_DISPLAY.get_size()))
+
         for row in self.rm_structure:
             for column in row:
-                column.draw(self.background)
+                if type(column) is Wall:
+                    column.draw(self.walls)
+                else:
+                    column.draw(self.floor)
+
+        # Mask out the parts of the wall surface that aren't walls
+        self.walls.convert_alpha()
+        self.walls.set_colorkey((0, 0, 0))
 
 
     def __str__(self):
