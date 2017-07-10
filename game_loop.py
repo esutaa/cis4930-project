@@ -42,7 +42,21 @@ def game_loop(res):
         
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             res.player.pos = (res.player.pos[0], res.player.pos[1]+C.SPRITE_BASE_SPEED)
-        
+
+
+        '''This checks the boundaries. First two checks y cooridnates.
+        Last two check the x coordiantes'''
+        if (res.player.pos[0] > 750):
+            res.player.pos = (750, res.player.pos[1])
+
+        if (res.player.pos[0] < 50):
+            res.player.pos = (50, res.player.pos[1])
+
+        if (res.player.pos[1] < 45):
+            res.player.pos = (res.player.pos[0], 45)
+
+        if (res.player.pos[1] > 530):
+            res.player.pos = (res.player.pos[0], 530)
 
         '''
         depending on how we want them to be handled in the game, keyboard
