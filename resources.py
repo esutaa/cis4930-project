@@ -45,22 +45,38 @@ class Resources:
         pass
 
 
-class PlayerCharacter(pygame.sprite.Sprite):
+class LivingEntity(pygame.sprite.Sprite):
+
+    def __init__(self, startpos):
+        pygame.sprite.Sprite.__init__(self, self.groups)
+        self.speed = C.SPRITE_BASE_SPEED
+        self.pos = startpos
+
+    def move(self, direction):
+        if direction is "right":
+            self.pos = (self.pos[0] + self.speed, self.pos[1])
+        elif direction is "left":
+            self.pos = (self.pos[0] - self.speed, self.pos[1])
+        elif direction is "down":
+            self.pos = (self.pos[0], self.pos[1] + self.speed)
+        elif direction is "up":
+            self.pos = (self.pos[0], self.pos[1] - self.speed)
+
+
+    def update(self):
+        pygame.sprite.Sprite.update(self)
+
+
+class PlayerCharacter(LivingEntity):
     """
     Class for the player's sprite, that extends pygame's sprite class.
     """
 
     # Data that's shared between all PlayerSprite objects
-    #image = pygame.Surface((C.PLAYER_SPRITE_WIDTH,C.PLAYER_SPRITE_HEIGHT))
     image = pygame.image.load(C.S_PLAYER)
-    #image.set_colorkey(C.ALPHA_COLOR)
-    #image = image.convert_alpha()
 
     def __init__(self, startpos):
-        pygame.sprite.Sprite.__init__(self, self.groups)
-
-        self.pos = startpos
-        # Track changes in x, y position
+        super().__init__(startpos)
 
         self.sprite = PlayerCharacter.image
         self.rect = self.sprite.get_rect()

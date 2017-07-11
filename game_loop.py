@@ -11,6 +11,7 @@ menu, etc.
 import pygame
 import constants as C
 import pause_menu
+import generate_room
 
 
 def game_loop(res):
@@ -29,17 +30,17 @@ def game_loop(res):
         #player movement
         #check if a key is being held, update the player.pos tuple
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            res.player.pos = (res.player.pos[0]+C.SPRITE_BASE_SPEED, res.player.pos[1])
-        
+            res.player.move("right")
+
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            res.player.pos = (res.player.pos[0]-C.SPRITE_BASE_SPEED, res.player.pos[1])
-        
-        if keys[pygame.K_UP] or keys[pygame.K_w]:
-            res.player.pos = (res.player.pos[0], res.player.pos[1]-C.SPRITE_BASE_SPEED)
-        
+            res.player.move("left")
+
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            res.player.pos = (res.player.pos[0], res.player.pos[1]+C.SPRITE_BASE_SPEED)
-        
+            res.player.move("down")
+
+        if keys[pygame.K_UP] or keys[pygame.K_w]:
+            res.player.move("up")
+
 
         '''
         depending on how we want them to be handled in the game, keyboard
@@ -63,15 +64,15 @@ def game_loop(res):
         # Tile collisions
         for sprite in res.g_collidable_sprites:
             collided_list = pygame.sprite.spritecollide \
-            (sprite, res.rooms[0].g_below_tiles, False, pygame.sprite.collide_mask)
+            (sprite, res.rooms[0].g_event_tiles, False, pygame.sprite.collide_rect)
 
             if len(collided_list) < 0:
                 print("Collision detected")
             for s in collided_list:
-                if type(s) is "Wall":
+                if isinstance(s, generate_room.Wall):
                     print("Collided with a wall")
-                elif type(s) is "Floor":
-                    print("Collided with a wall")
+                elif isinstance(s, generate_room.Hole):
+                    print("Collided with a hole")
                 else:
                     print("Collided with something")
 
