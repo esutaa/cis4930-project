@@ -59,6 +59,22 @@ def game_loop(res):
                 pygame.quit()
                 quit()
 
+        ## Check collisions
+        # Tile collisions
+        for sprite in res.g_collidable_sprites:
+            collided_list = pygame.sprite.spritecollide \
+            (sprite, res.rooms[0].g_below_tiles, False, pygame.sprite.collide_mask)
+
+            if len(collided_list) < 0:
+                print("Collision detected")
+            for s in collided_list:
+                if type(s) is "Wall":
+                    print("Collided with a wall")
+                elif type(s) is "Floor":
+                    print("Collided with a wall")
+                else:
+                    print("Collided with something")
+
         res.rooms[0].g_below_tiles.clear(C.GAME_DISPLAY, C.BACKGROUND)
         res.rooms[0].g_below_tiles.update()
         res.rooms[0].g_below_tiles.draw(C.GAME_DISPLAY)
