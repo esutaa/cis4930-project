@@ -226,7 +226,9 @@ Wall.groups = allgroup, collisiongroup, blockgroup
 
 
 wall1 = Wall(640/2, 480/2)
-wall2 = Wall(640/2+32, 480/2)
+wall2 = Wall(640/2, 480/2+32)
+wall3 = Wall(640/2+32, 480/2)
+wall4 = Wall(640/2+32, 480/2+32)
 player = PlayerCharacter((640/2, 480/4))
 
 
