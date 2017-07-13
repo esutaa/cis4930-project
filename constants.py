@@ -39,10 +39,14 @@ ALPHA_COLOR = (255, 0, 195) # Pink background color for transparency
 # String constants
 GAME_NAME = 'Our Python Game'
 FONT = "freesansbold.ttf"
+UP = "up"
+DOWN = "down"
+LEFT = "left"
+RIGHT = "right"
 
 
 # Gameplay constants
-SPRITE_BASE_SPEED = 5
+SPRITE_BASE_SPEED = 25
 
 
 # Image dimension constants
@@ -51,6 +55,12 @@ PLAYER_SPRITE_HEIGHT = 32
 
 TILE_WIDTH = 32
 TILE_HEIGHT = 32
+
+# Groups
+G_EVENT_TILES = pygame.sprite.Group()
+G_SOLID_TILES = pygame.sprite.Group()
+G_ABOVE_TILES = pygame.sprite.Group()
+G_BELOW_TILES = pygame.sprite.Group()
 
 
 # Room generation constants

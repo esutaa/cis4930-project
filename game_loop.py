@@ -20,8 +20,12 @@ def game_loop(res):
     """
 
     loop = True
-
+    milliseconds = 0
+    seconds = 0
     while loop:
+
+        milliseconds = C.CLOCK.tick(60)
+        seconds = milliseconds/100.0
 
         '''keys is a dict with entries of {pygame.K_<key>, boolean}
         to tell whether any key is held down each frame'''
@@ -30,16 +34,16 @@ def game_loop(res):
         #player movement
         #check if a key is being held, update the player.pos tuple
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            res.player.move("right")
+            res.player.move(C.RIGHT, seconds)
 
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            res.player.move("left")
+            res.player.move(C.LEFT, seconds)
 
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            res.player.move("down")
+            res.player.move(C.DOWN, seconds)
 
         if keys[pygame.K_UP] or keys[pygame.K_w]:
-            res.player.move("up")
+            res.player.move(C.UP, seconds)
 
 
         '''
@@ -60,35 +64,18 @@ def game_loop(res):
                 pygame.quit()
                 quit()
 
-        ## Check collisions
-        # Tile collisions
-        for sprite in res.g_collidable_sprites:
-            collided_list = pygame.sprite.spritecollide \
-            (sprite, res.rooms[0].g_event_tiles, False, pygame.sprite.collide_rect)
-
-            if len(collided_list) < 0:
-                print("Collision detected")
-            for s in collided_list:
-                if isinstance(s, generate_room.Wall):
-                    print("Collided with a wall")
-                elif isinstance(s, generate_room.Hole):
-                    print("Collided with a hole")
-                else:
-                    print("Collided with something")
-
-        res.rooms[0].g_below_tiles.clear(C.GAME_DISPLAY, C.BACKGROUND)
-        res.rooms[0].g_below_tiles.update()
-        res.rooms[0].g_below_tiles.draw(C.GAME_DISPLAY)
+        C.G_BELOW_TILES.clear(C.GAME_DISPLAY, C.BACKGROUND)
+        C.G_BELOW_TILES.update(seconds)
+        C.G_BELOW_TILES.draw(C.GAME_DISPLAY)
 
         res.g_all_sprites.clear(C.GAME_DISPLAY, C.BACKGROUND)
-        res.g_player_sprites.update()
+        res.g_player_sprites.update(seconds)
 
         res.g_all_sprites.draw(C.GAME_DISPLAY)
         res.g_player_sprites.draw(C.GAME_DISPLAY)
 
-        res.rooms[0].g_above_tiles.clear(C.GAME_DISPLAY, C.BACKGROUND)
-        res.rooms[0].g_above_tiles.update()
-        res.rooms[0].g_above_tiles.draw(C.GAME_DISPLAY)
+        C.G_ABOVE_TILES.clear(C.GAME_DISPLAY, C.BACKGROUND)
+        C.G_ABOVE_TILES.update(seconds)
+        C.G_ABOVE_TILES.draw(C.GAME_DISPLAY)
 
-        pygame.display.update()
-        C.CLOCK.tick(60)
+        pygame.display.flip()

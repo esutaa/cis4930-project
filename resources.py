@@ -49,22 +49,61 @@ class LivingEntity(pygame.sprite.Sprite):
 
     def __init__(self, startpos):
         pygame.sprite.Sprite.__init__(self, self.groups)
-        self.speed = C.SPRITE_BASE_SPEED
+
+        # How fast the entity moves on each axis
+        # Used for time-based movement instead of frame-based movement
+        self.dx = C.SPRITE_BASE_SPEED
+        self.dy = C.SPRITE_BASE_SPEED
+
         self.pos = startpos
+        self.x = self.pos[0]
+        self.y = self.pos[1]
 
-    def move(self, direction):
-        if direction is "right":
-            self.pos = (self.pos[0] + self.speed, self.pos[1])
-        elif direction is "left":
-            self.pos = (self.pos[0] - self.speed, self.pos[1])
-        elif direction is "down":
-            self.pos = (self.pos[0], self.pos[1] + self.speed)
-        elif direction is "up":
-            self.pos = (self.pos[0], self.pos[1] - self.speed)
+        # Used for keeping track of previous location when moving
+        self.old_pos = startpos
+        self.old_x = self.old_pos[0]
+        self.old_y = self.old_pos[1]
+
+    def move(self, direction, seconds):
+
+        move_amt = 0
+        if direction is C.RIGHT:
+            move_amt = round(self.dx * seconds)
+
+            self.old_x = self.x
+            self.x += move_amt
+
+        elif direction is C.LEFT:
+            move_amt = round(self.dx * seconds)
+
+            self.old_x = self.x
+            self.x -= move_amt
+
+        elif direction is C.UP:
+            move_amt = round(self.dy * seconds)
+
+            self.old_y = self.y
+            self.y -= move_amt
+
+        elif direction is C.DOWN:
+            move_amt = round(self.dy * seconds)
+
+            self.old_y = self.y
+            self.y += move_amt
 
 
-    def update(self):
-        pygame.sprite.Sprite.update(self)
+        self.pos = (self.x, self.y)
+        self.rect.center = self.pos
+
+        collisions = pygame.sprite.spritecollide(self, C.G_SOLID_TILES, False, pygame.sprite.collide_rect)
+        if len(collisions) is not 0:
+            self.x = self.old_x
+            self.y = self.old_y
+            self.pos = (self.x, self.y)
+            self.rect.center = self.pos
+
+    def update(self, seconds):
+        pygame.sprite.Sprite.update(self, seconds)
 
 
 class PlayerCharacter(LivingEntity):
@@ -80,11 +119,9 @@ class PlayerCharacter(LivingEntity):
 
         self.sprite = PlayerCharacter.image
         self.rect = self.sprite.get_rect()
-        self.radius = C.PLAYER_SPRITE_WIDTH / 2 # For collision detection
 
-
-    def update(self):
+    def update(self, seconds):
         """
         Updates on the sprite to run
         """
-        self.rect.center = self.pos
+        pass

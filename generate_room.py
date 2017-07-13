@@ -27,13 +27,9 @@ class Room(object):
     """
     def __init__(self, room_file):
 
-        self.g_event_tiles = pygame.sprite.Group()
-        self.g_above_tiles = pygame.sprite.Group()
-        self.g_below_tiles = pygame.sprite.Group()
-
-        Wall.groups = self.g_above_tiles, self.g_event_tiles
-        Floor.groups = self.g_below_tiles
-        Hole.groups = self.g_below_tiles, self.g_event_tiles
+        Wall.groups = C.G_ABOVE_TILES, C.G_SOLID_TILES
+        Floor.groups = C.G_BELOW_TILES
+        Hole.groups = C.G_BELOW_TILES, C.G_EVENT_TILES
 
         self.wall_list = list()
         self.floor_list = list()
@@ -102,7 +98,7 @@ class Wall(pygame.sprite.Sprite):
         """
         return 'x'
 
-    def update(self):
+    def update(self, seconds):
         pass
 
 
@@ -133,7 +129,7 @@ class Floor(pygame.sprite.Sprite):
         """
         return '.'
 
-    def update(self):
+    def update(self, seconds):
         pass
 
 class Hole(pygame.sprite.Sprite):
@@ -163,5 +159,5 @@ class Hole(pygame.sprite.Sprite):
         """
         return '0'
 
-    def update(self):
+    def update(self, seconds):
         pass
