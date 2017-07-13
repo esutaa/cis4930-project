@@ -40,11 +40,26 @@ def game_loop(res):
             res.player.move(C.LEFT, seconds)
 
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
+
             res.player.move(C.DOWN, seconds)
 
         if keys[pygame.K_UP] or keys[pygame.K_w]:
             res.player.move(C.UP, seconds)
 
+
+        '''This checks the boundaries. First two checks y cooridnates.
+        Last two check the x coordiantes'''
+        if (res.player.pos[0] > C.DISPLAY_WIDTH - 50):
+            res.player.pos = (C.DISPLAY_WIDTH - 50, res.player.pos[1])
+
+        if (res.player.pos[0] < 50):
+            res.player.pos = (50, res.player.pos[1])
+
+        if (res.player.pos[1] < 45):
+            res.player.pos = (res.player.pos[0], 45)
+
+        if (res.player.pos[1] > C.DISPLAY_HEIGHT - 70):
+            res.player.pos = (res.player.pos[0], C.DISPLAY_HEIGHT - 70)
 
         '''
         depending on how we want them to be handled in the game, keyboard
