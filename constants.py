@@ -74,3 +74,9 @@ S_PLAYER = "resources/sprites/s_player_noBG.png"
 T_FLOOR = "resources/tiles/t_floor.png"
 T_HOLE = "resources/tiles/t_hole.png"
 T_WALL = "resources/tiles/t_wall.png"
+
+# Sound resource paths
+SFX_PLAYER_STEP = "resources/sfx/player_step.mp3"
+SFX_HIT_SMALL = "resources/sfx/hit_small.mp3"
+SFX_HIT_BIG = "resources/sfx/hit_big.mp3"
+SFX_HIT_DIE = "resources/sfx/hit_die.mp3"
