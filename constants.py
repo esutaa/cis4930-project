@@ -7,7 +7,8 @@ PyLint demands that I put all globals in uppercase.
 '''
 import pygame
 import os # For getting the number of map files in a directory
-
+pygame.mixer.pre_init(44100, -16, 2, 2048)
+pygame.init()
 
 # Display properties
 DISPLAY_WIDTH = 800
@@ -76,7 +77,10 @@ T_HOLE = "resources/tiles/t_hole.png"
 T_WALL = "resources/tiles/t_wall.png"
 
 # Sound resource paths
-SFX_PLAYER_STEP = "resources/sfx/player_step.mp3"
-SFX_HIT_SMALL = "resources/sfx/hit_small.mp3"
-SFX_HIT_BIG = "resources/sfx/hit_big.mp3"
-SFX_HIT_DIE = "resources/sfx/hit_die.mp3"
+SFX_PLAYER_STEP = "resources/sfx/player_step.ogg"
+SFX_HIT_SMALL = "resources/sfx/hit_small.ogg"
+SFX_HIT_BIG = "resources/sfx/hit_big.ogg"
+SFX_HIT_DIE = "resources/sfx/hit_die.ogg"
+
+# Misc sound constants
+STEP_FREQUENCY = 1.0 # How often a step sound is played when moving

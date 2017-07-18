@@ -64,6 +64,9 @@ class LivingEntity(pygame.sprite.Sprite):
         self.old_x = self.old_pos[0]
         self.old_y = self.old_pos[1]
 
+        # How long the entity has been alive
+        self.seconds = 0
+
     def move(self, direction, seconds):
 
         move_amt = 0
@@ -104,6 +107,7 @@ class LivingEntity(pygame.sprite.Sprite):
 
     def update(self, seconds):
         pygame.sprite.Sprite.update(self, seconds)
+        self.seconds += seconds
 
 
 class PlayerCharacter(LivingEntity):
@@ -120,8 +124,21 @@ class PlayerCharacter(LivingEntity):
         self.sprite = PlayerCharacter.image
         self.rect = self.sprite.get_rect()
 
+        self.sfx_step = pygame.mixer.Sound(C.SFX_PLAYER_STEP)
+        # The last time the step sound was played
+        self.last_step = 0.0
+
+    def move(self, direction, seconds):
+        super().move(direction, seconds)
+        
+        #if (seconds - self.last_step) > C.STEP_FREQUENCY:
+        #    self.last_step = seconds
+        #    sfx_step.play()
+
+
     def update(self, seconds):
         """
         Updates on the sprite to run
         """
-        pass
+        super().update(seconds)
+        self.sfx_step.play()
