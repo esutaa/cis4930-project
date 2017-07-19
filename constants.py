@@ -83,4 +83,5 @@ SFX_HIT_BIG = "resources/sfx/hit_big.ogg"
 SFX_HIT_DIE = "resources/sfx/hit_die.ogg"
 
 # Misc sound constants
-STEP_FREQUENCY = 1.0 # How often a step sound is played when moving
+STEP_FREQUENCY = 1.7 # How often a step sound is played when moving
+PLAYER_STEP_VOL = 0.4

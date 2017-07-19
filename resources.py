@@ -125,15 +125,18 @@ class PlayerCharacter(LivingEntity):
         self.rect = self.sprite.get_rect()
 
         self.sfx_step = pygame.mixer.Sound(C.SFX_PLAYER_STEP)
+        self.sfx_step.set_volume(C.PLAYER_STEP_VOL) 
         # The last time the step sound was played
-        self.last_step = 0.0
+        self.step_cooldown = 0.0
 
     def move(self, direction, seconds):
         super().move(direction, seconds)
         
-        #if (seconds - self.last_step) > C.STEP_FREQUENCY:
-        #    self.last_step = seconds
-        #    sfx_step.play()
+        if self.step_cooldown <= 0.0:
+            self.sfx_step.play()
+            self.step_cooldown = C.STEP_FREQUENCY
+
+
 
 
     def update(self, seconds):
@@ -141,4 +144,7 @@ class PlayerCharacter(LivingEntity):
         Updates on the sprite to run
         """
         super().update(seconds)
-        self.sfx_step.play()
+        if self.step_cooldown > 0.0:
+            self.step_cooldown -= seconds
+            if self.step_cooldown < 0.0:
+                self.step_cooldown = 0.0
