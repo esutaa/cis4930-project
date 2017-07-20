@@ -55,14 +55,37 @@ class LivingEntity(pygame.sprite.Sprite):
         self.dx = C.SPRITE_BASE_SPEED
         self.dy = C.SPRITE_BASE_SPEED
 
+      
+        #C.health = 100 # moved to constants.py
+        self.health_bar(C.GAME_DISPLAY, 300, 500, C.health) # need to get proper x/y coordinates to make bar hover over sprites
+                                                            # need to blit to screen?
+               
+
         self.pos = startpos
         self.x = self.pos[0]
         self.y = self.pos[1]
-
+        
         # Used for keeping track of previous location when moving
         self.old_pos = startpos
         self.old_x = self.old_pos[0]
         self.old_y = self.old_pos[1]
+
+
+    def health_bar(self, screen, x, y, healthLevel):
+        # need to blit ontop of C.GAME_DISPLAY to allow for overhead health bar for sprites?
+
+        fill = (healthLevel / 100) * C.barLength
+        outlineBar = pygame.Rect(x, y, C.barLength, C.barHeight)
+        fillBar = pygame.Rect(x, y, fill, C.barHeight)
+        if(healthLevel >= 75):
+            pygame.draw.rect(screen, C.GREEN, fillBar)
+        elif(healthLevel > 50):
+            pygame.draw.rect(screen, C.YELLOW, fillBar)
+        elif(healthLevel <= 50):
+            pygame.draw.rect(screen, C.RED, fillBar)
+        pygame.draw.rect(screen, C.BLACK, outlineBar, 2)
+        
+        
 
     def move(self, direction, seconds):
 

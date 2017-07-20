@@ -40,7 +40,6 @@ def game_loop(res):
             res.player.move(C.LEFT, seconds)
 
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-
             res.player.move(C.DOWN, seconds)
 
         if keys[pygame.K_UP] or keys[pygame.K_w]:

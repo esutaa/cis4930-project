@@ -13,6 +13,15 @@ import os # For getting the number of map files in a directory
 DISPLAY_WIDTH = 800
 DISPLAY_HEIGHT = 600
 
+# Health bar info
+barLength = 100
+barHeight = 100
+GREEN = (0, 255, 0)
+YELLOW = (255,255,0) 
+RED = (255,0,0)
+#WHITE = (255, 255, 255)
+health = 100
+
 # Create a display surface
 GAME_DISPLAY = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
 
