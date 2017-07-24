@@ -76,6 +76,8 @@ T_FLOOR = "resources/tiles/t_floor.png"
 T_HOLE = "resources/tiles/t_hole.png"
 T_WALL = "resources/tiles/t_wall.png"
 
+S_HEALTH = "resources/sprites/s_health.png"
+
 # Sound resource paths
 SFX_PLAYER_STEP = "resources/sfx/player_step.ogg"
 SFX_HIT_SMALL = "resources/sfx/hit_small.ogg"
