@@ -136,9 +136,6 @@ class PlayerCharacter(LivingEntity):
             self.sfx_step.play()
             self.step_cooldown = C.STEP_FREQUENCY
 
-
-
-
     def update(self, seconds):
         """
         Updates on the sprite to run

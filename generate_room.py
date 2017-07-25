@@ -20,6 +20,7 @@ would be given its own subclass and functionality.
 
 import pygame
 import constants as C
+import items
 
 class Room(object):
     """
@@ -30,6 +31,7 @@ class Room(object):
         Wall.groups = C.G_ABOVE_TILES, C.G_SOLID_TILES
         Floor.groups = C.G_BELOW_TILES
         Hole.groups = C.G_BELOW_TILES, C.G_EVENT_TILES
+        items.HealthPack.groups = C.G_ITEMS
 
         self.wall_list = list()
         self.floor_list = list()
@@ -63,6 +65,8 @@ class Room(object):
                             x_coord += C.TILE_WIDTH
                     x_coord = 0
                 y_coord += C.TILE_HEIGHT
+        
+        h = items.HealthPack(((C.DISPLAY_WIDTH/2)+100,(C.DISPLAY_HEIGHT/2)+200))
 
     def __str__(self):
         for i in self.rm_structure:

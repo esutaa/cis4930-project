@@ -12,16 +12,17 @@ import pygame
 import constants as C
 import pause_menu
 import generate_room
+import items
 
 
 def game_loop(res):
     """
     Manager function that's going to be called from the start.py module.
     """
-
     loop = True
     milliseconds = 0
     seconds = 0
+    C.G_ITEMS.draw(C.GAME_DISPLAY)
     while loop:
 
         milliseconds = C.CLOCK.tick(60)
@@ -83,10 +84,12 @@ def game_loop(res):
         C.G_BELOW_TILES.update(seconds)
         C.G_BELOW_TILES.draw(C.GAME_DISPLAY)
 
-        res.g_all_sprites.clear(C.GAME_DISPLAY, C.BACKGROUND)
         res.g_player_sprites.update(seconds)
 
-        res.g_all_sprites.draw(C.GAME_DISPLAY)
+        C.G_ITEMS.clear(C.GAME_DISPLAY, C.BACKGROUND)
+        C.G_ITEMS.update(seconds)
+        C.G_ITEMS.draw(C.GAME_DISPLAY)
+
         res.g_player_sprites.draw(C.GAME_DISPLAY)
 
         C.G_ABOVE_TILES.clear(C.GAME_DISPLAY, C.BACKGROUND)

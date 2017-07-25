@@ -62,7 +62,7 @@ G_EVENT_TILES = pygame.sprite.Group()
 G_SOLID_TILES = pygame.sprite.Group()
 G_ABOVE_TILES = pygame.sprite.Group()
 G_BELOW_TILES = pygame.sprite.Group()
-
+G_ITEMS = pygame.sprite.Group()
 
 # Room generation constants
 ROOM_FILES_PATH = "resources/maps/."
