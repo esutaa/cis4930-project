@@ -60,6 +60,7 @@ TILE_HEIGHT = 32
 # Groups
 G_EVENT_TILES = pygame.sprite.Group()
 G_SOLID_TILES = pygame.sprite.Group()
+G_HOLE_TILES = pygame.sprite.Group()
 G_ABOVE_TILES = pygame.sprite.Group()
 G_BELOW_TILES = pygame.sprite.Group()
 G_PLAYER_SPRITE = pygame.sprite.Group()

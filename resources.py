@@ -24,7 +24,7 @@ class Resources:
     def __init__(self):
 
         # Instantiate sprites
-        self.player = PlayerCharacter((C.DISPLAY_WIDTH/2, C.DISPLAY_HEIGHT/2))
+        self.player = PlayerCharacter((C.DISPLAY_WIDTH/2, (C.DISPLAY_HEIGHT/2)+128))
 
         # Create rooms
         # TODO: make this more robust, right now it only loads the one test room
@@ -60,6 +60,9 @@ class LivingEntity(pygame.sprite.Sprite):
         # How long the entity has been alive
         self.seconds = 0
 
+        # Can this entity fly? I.e hover over floor tiles
+        self.floating = False
+
     def move(self, direction, seconds):
 
         move_amt = 0
@@ -92,11 +95,19 @@ class LivingEntity(pygame.sprite.Sprite):
         self.rect.center = self.pos
 
         collisions = pygame.sprite.spritecollide(self, C.G_SOLID_TILES, False, pygame.sprite.collide_rect)
+
         if len(collisions) is not 0:
             self.x = self.old_x
             self.y = self.old_y
             self.pos = (self.x, self.y)
             self.rect.center = self.pos
+        if self.floating is False:
+            collisions = pygame.sprite.spritecollide(self, C.G_HOLE_TILES, False, pygame.sprite.collide_rect)
+            if len(collisions) is not 0:
+                self.x = self.old_x
+                self.y = self.old_y
+                self.pos = (self.x, self.y)
+                self.rect.center = self.pos
 
     def update(self, seconds):
         pygame.sprite.Sprite.update(self, seconds)

@@ -30,8 +30,8 @@ class Room(object):
 
         Wall.groups = C.G_ABOVE_TILES, C.G_SOLID_TILES
         Floor.groups = C.G_BELOW_TILES
-        Hole.groups = C.G_BELOW_TILES, C.G_EVENT_TILES
-        items.HealthPack.groups = C.G_ITEMS
+        Hole.groups = C.G_BELOW_TILES, C.G_EVENT_TILES, C.G_HOLE_TILES
+
 
         self.wall_list = list()
         self.floor_list = list()
