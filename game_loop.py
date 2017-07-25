@@ -22,7 +22,10 @@ def game_loop(res):
     loop = True
     milliseconds = 0
     seconds = 0
+
+    # Initial draw
     C.G_ITEMS.draw(C.GAME_DISPLAY)
+
     while loop:
 
         milliseconds = C.CLOCK.tick(60)
@@ -84,13 +87,13 @@ def game_loop(res):
         C.G_BELOW_TILES.update(seconds)
         C.G_BELOW_TILES.draw(C.GAME_DISPLAY)
 
-        res.g_player_sprites.update(seconds)
+        C.G_PLAYER_SPRITE.update(seconds)
 
         C.G_ITEMS.clear(C.GAME_DISPLAY, C.BACKGROUND)
         C.G_ITEMS.update(seconds)
         C.G_ITEMS.draw(C.GAME_DISPLAY)
 
-        res.g_player_sprites.draw(C.GAME_DISPLAY)
+        C.G_PLAYER_SPRITE.draw(C.GAME_DISPLAY)
 
         C.G_ABOVE_TILES.clear(C.GAME_DISPLAY, C.BACKGROUND)
         C.G_ABOVE_TILES.update(seconds)

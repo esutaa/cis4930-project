@@ -48,7 +48,7 @@ RIGHT = "right"
 
 # Gameplay constants
 SPRITE_BASE_SPEED = 25
-
+HEALTH_PACK_HEAL_AMT = 50
 
 # Image dimension constants
 PLAYER_SPRITE_WIDTH = 32
@@ -62,6 +62,7 @@ G_EVENT_TILES = pygame.sprite.Group()
 G_SOLID_TILES = pygame.sprite.Group()
 G_ABOVE_TILES = pygame.sprite.Group()
 G_BELOW_TILES = pygame.sprite.Group()
+G_PLAYER_SPRITE = pygame.sprite.Group()
 G_ITEMS = pygame.sprite.Group()
 
 # Room generation constants
