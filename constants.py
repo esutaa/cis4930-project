@@ -48,7 +48,7 @@ RIGHT = "right"
 
 # Gameplay constants
 SPRITE_BASE_SPEED = 25
-
+HEALTH_PACK_HEAL_AMT = 50
 
 # Image dimension constants
 PLAYER_SPRITE_WIDTH = 32
@@ -63,7 +63,8 @@ G_SOLID_TILES = pygame.sprite.Group()
 G_HOLE_TILES = pygame.sprite.Group()
 G_ABOVE_TILES = pygame.sprite.Group()
 G_BELOW_TILES = pygame.sprite.Group()
-
+G_PLAYER_SPRITE = pygame.sprite.Group()
+G_ITEMS = pygame.sprite.Group()
 
 # Room generation constants
 ROOM_FILES_PATH = "resources/maps/."
@@ -76,6 +77,8 @@ S_PLAYER = "resources/sprites/s_player_noBG.png"
 T_FLOOR = "resources/tiles/t_floor.png"
 T_HOLE = "resources/tiles/t_hole.png"
 T_WALL = "resources/tiles/t_wall.png"
+
+S_HEALTH = "resources/sprites/s_health.png"
 
 # Sound resource paths
 SFX_PLAYER_STEP = "resources/sfx/player_step.ogg"

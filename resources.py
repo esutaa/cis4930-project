@@ -22,13 +22,6 @@ class Resources:
     the main game loop begins.
     """
     def __init__(self):
-        # Create sprite groups
-        self.g_all_sprites = pygame.sprite.Group()
-        self.g_player_sprites = pygame.sprite.Group()
-        self.g_collidable_sprites = pygame.sprite.Group()
-
-        # Assign groups to sprites
-        PlayerCharacter.groups = self.g_player_sprites, self.g_collidable_sprites
 
         # Instantiate sprites
         self.player = PlayerCharacter((C.DISPLAY_WIDTH/2, (C.DISPLAY_HEIGHT/2)+128))
@@ -147,9 +140,6 @@ class PlayerCharacter(LivingEntity):
             self.sfx_step.play()
             self.step_cooldown = C.STEP_FREQUENCY
 
-
-
-
     def update(self, seconds):
         """
         Updates on the sprite to run
@@ -159,3 +149,5 @@ class PlayerCharacter(LivingEntity):
             self.step_cooldown -= seconds
             if self.step_cooldown < 0.0:
                 self.step_cooldown = 0.0
+
+PlayerCharacter.groups = C.G_PLAYER_SPRITE
