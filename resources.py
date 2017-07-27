@@ -14,6 +14,7 @@ structure that's used by the game loop generically.
 import pygame
 import constants as C
 import generate_room
+import random
 
 class Resources:
     """
@@ -28,15 +29,19 @@ class Resources:
 
         # Create rooms
         # TODO: make this more robust, right now it only loads the one test room
-        self.rooms = list()
-        self.rooms.append(generate_room.Room("resources/maps/m_test.txt"))
+        
+        self.currRoom = generate_room.Room("resources/maps/m_test.txt")
 
-    def regen_floor():
-        """
-        Create a new random floor
-        """
-        pass
+        #self.rooms = list()
+        #self.rooms.append(generate_room.Room("resources/maps/m_test.txt"))
 
+    def next_room(self, entryPoint):
+        if entryPoint == "BR":
+            self.currRoom.left = generate_room.Room("resources/maps/m_test2.txt")
+            self.oldRoom = self.currRoom
+            self.currRoom = self.oldRoom.left
+            self.currRoom.right = self.oldRoom
+            self.player.pos = (C.DISPLAY_WIDTH - 64, C.DISPLAY_HEIGHT - 64)
 
 class LivingEntity(pygame.sprite.Sprite):
 

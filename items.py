@@ -18,7 +18,7 @@ class AllItems(pygame.sprite.Sprite):
         if len(collisions) > 0:
             self.collided_with_player = True
 
-
+'''
 class HealthPack(AllItems):
 
     image = pygame.image.load(C.S_HEALTH)
@@ -39,4 +39,4 @@ class HealthPack(AllItems):
             del self
         
         # TODO: check if collision with the player
-
+'''

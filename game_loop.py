@@ -77,6 +77,11 @@ def game_loop(res):
         if keys[pygame.K_ESCAPE]:
             pause_menu.pause_menu(C.GAME_DISPLAY)
 
+        #check if player is moving to next room
+        if (res.player.pos[0] <= 64):
+            if (res.player.pos[1] <= 64):
+                res.next_room("BR")
+
         #check for other events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

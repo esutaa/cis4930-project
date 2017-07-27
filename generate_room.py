@@ -55,7 +55,7 @@ class Room(object):
                         continue
                     else:
                         for char in line:
-                            print("Room.__init__(): creating tile with coords {},{}".format(x_coord, y_coord))
+                            #print("Room.__init__(): creating tile with coords {},{}".format(x_coord, y_coord))
                             if char == 'x':
                                 self.wall_list.append(Wall(x=x_coord, y=y_coord))
                             elif char == '.':
@@ -66,7 +66,7 @@ class Room(object):
                     x_coord = 0
                 y_coord += C.TILE_HEIGHT
         
-        h = items.HealthPack(((C.DISPLAY_WIDTH/2)+100,(C.DISPLAY_HEIGHT/2)+200))
+        #h = items.HealthPack(((C.DISPLAY_WIDTH/2)+100,(C.DISPLAY_HEIGHT/2)+200))
 
     def __str__(self):
         for i in self.rm_structure:
