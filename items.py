@@ -17,6 +17,7 @@ class AllItems(pygame.sprite.Sprite):
         collisions = pygame.sprite.spritecollide(self, C.G_PLAYER_SPRITE, False, pygame.sprite.collide_rect)
         if len(collisions) > 0:
             self.collided_with_player = True
+AllItems.groups = C.G_ITEMS
 
 
 class HealthPack(AllItems):
@@ -37,6 +38,4 @@ class HealthPack(AllItems):
             # collisions[0].heal(C.HEALTH_PACK_HEAL_AMT)
             self.kill()
             del self
-        
-        # TODO: check if collision with the player
-
+HealthPack.groups = C.G_ITEMS
