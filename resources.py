@@ -44,31 +44,6 @@ class Resources:
         """
         pass
 
-#####################
-#class LiveBar(pygame.sprite.Sprite):
-#    def __init__(self, boss):
-#        pygame.sprite.Sprite.__init__(self,self.groups)
-#        self.boss = boss
-#        self.image = pygame.Surface((self.boss.rect.width,7))
-#        self.image.set_colorkey((0,0,0)) # black transparent
-#        pygame.draw.rect(self.image, (0,255,0), (0,0,self.boss.rect.width,7),1)
-#        self.rect = self.image.get_rect()
-#        self.oldpercent = 0
-#        self.bossnumber = self.boss.number # the unique number (name) of my boss
-
-#    def update(self, time):
-#        self.percent = self.boss.hitpoints / self.boss.hitpointsfull * 1.0
-#        if self.percent != self.oldpercent:
-#            pygame.draw.rect(self.image, (0,0,0), (1,1,self.boss.rect.width-2,5)) # fill black
-#            pygame.draw.rect(self.image, (0,255,0), (1,1,int(self.boss.rect.width * self.percent),5),0) # fill green
-#        self.oldpercent = self.percent
-#        self.rect.centerx = self.boss.rect.centerx
-#        self.rect.centery = self.boss.rect.centery - self.boss.rect.height /2 - 10
-#        #check if boss is still alive
-#        if not Bird.birds[self.bossnumber]:
-#            self.kill() # kill the hitbar
-#########################
-
 
 class LivingEntity(pygame.sprite.Sprite):
 
@@ -83,7 +58,7 @@ class LivingEntity(pygame.sprite.Sprite):
       
         #C.health = 100 # moved to constants.py
         self.health_bar(C.GAME_DISPLAY, 300, 500, C.health) # need to get proper x/y coordinates to make bar hover over sprites
-        #Livebar(self)                                                    # need to blit to screen?
+                                                        # need to blit to screen?
                
 
         self.pos = startpos
