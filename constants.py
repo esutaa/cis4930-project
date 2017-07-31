@@ -88,7 +88,7 @@ SFX_HIT_BIG = "resources/sfx/hit_big.ogg"
 SFX_HIT_DIE = "resources/sfx/hit_die.ogg"
 SFX_MENU_OPEN = "resources/sfx/menu_open.ogg"
 SFX_MENU_CLOSE = "resources/sfx/menu_close.ogg"
-SFX_MENU_MOVE = "resouces/sfx/menu_move.ogg"
+SFX_MENU_MOVE = "resources/sfx/menu_move.ogg"
 
 # Music resource paths
 MUS_LEVEL_MUSIC = "resources/music/level_music.ogg"
