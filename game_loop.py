@@ -53,6 +53,7 @@ def game_loop(res):
 
         '''This checks the boundaries. First two checks y cooridnates.
         Last two check the x coordiantes'''
+        '''
         if (res.player.pos[0] > C.DISPLAY_WIDTH - 50):
             res.player.pos = (C.DISPLAY_WIDTH - 50, res.player.pos[1])
 
@@ -64,6 +65,7 @@ def game_loop(res):
 
         if (res.player.pos[1] > C.DISPLAY_HEIGHT - 70):
             res.player.pos = (res.player.pos[0], C.DISPLAY_HEIGHT - 70)
+        '''
 
         '''
         depending on how we want them to be handled in the game, keyboard
@@ -77,10 +79,11 @@ def game_loop(res):
         if keys[pygame.K_ESCAPE]:
             pause_menu.pause_menu(C.GAME_DISPLAY)
 
-        #check if player is moving to next room
-        if (res.player.pos[0] <= 64):
-            if (res.player.pos[1] <= 64):
-                res.next_room("BR")
+        #check player position for room transition triggers
+        if (res.player.pos[0] <= 32):
+            res.next_room("right")
+        if (res.player.pos[0] >= C.DISPLAY_WIDTH - 32):
+            res.next_room("left")
 
         #check for other events
         for event in pygame.event.get():

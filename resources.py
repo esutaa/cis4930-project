@@ -36,12 +36,22 @@ class Resources:
         #self.rooms.append(generate_room.Room("resources/maps/m_test.txt"))
 
     def next_room(self, entryPoint):
-        if entryPoint == "BR":
-            self.currRoom.left = generate_room.Room("resources/maps/m_test2.txt")
+        if entryPoint == "right":
+            if not hasattr(self.currRoom, 'left'):
+                self.currRoom.left = generate_room.Room("resources/maps/m_test2.txt")
             self.oldRoom = self.currRoom
             self.currRoom = self.oldRoom.left
             self.currRoom.right = self.oldRoom
-            self.player.pos = (C.DISPLAY_WIDTH - 64, C.DISPLAY_HEIGHT - 64)
+            self.player.x += C.DISPLAY_WIDTH
+
+        elif entryPoint == "left":
+            if not hasattr(self.currRoom, 'right'):
+                self.currRoom.right = generate_room.Room("resources/maps/m_test2.txt")
+            self.oldRoom = self.currRoom
+            self.currRoom = self.oldRoom.right
+            self.currRoom.left = self.oldRoom
+            self.player.x -= C.DISPLAY_WIDTH
+
 
 class LivingEntity(pygame.sprite.Sprite):
 
