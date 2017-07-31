@@ -35,3 +35,24 @@ def render_text(text, color, font):
 
     # get_rect() returns a Rect of final dimensions and center of rendered text
     return text_surface, text_surface.get_rect()
+
+
+def split_spritesheet(sheet_path, rows, columns):
+    """
+    Takes an image resource containing several frames, and splits it into a list
+    of subsurfaces for each different image
+    """
+    to_return = list()
+
+    spritesheet = pygame.image.load(sheet_path)
+
+    curr_x = 0
+    curr_y = 0
+    for row in range(0, rows):
+        for column in range(0, columns):
+            to_return.append(spritesheet.subsurface((curr_x, curr_y, C.TILE_WIDTH, C.TILE_HEIGHT)))
+            curr_x += C.TILE_WIDTH
+        curr_x = 0
+        curr_y += C.TILE_HEIGHT
+
+    return to_return
