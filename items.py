@@ -1,4 +1,5 @@
 import pygame
+from helpers import split_spritesheet
 import constants as C
 
 class AllItems(pygame.sprite.Sprite):
@@ -22,16 +23,31 @@ AllItems.groups = C.G_ITEMS
 
 class HealthPack(AllItems):
 
-    image = pygame.image.load(C.S_HEALTH)
+    # How fast a HealthPack should animate
+    anim_speed = 1.3
 
     def __init__(self, coords):
         super().__init__(coords)
-        self.sprite = HealthPack.image
-        self.rect = self.sprite.get_rect()
+
+        self.animation = split_spritesheet(C.S_HEALTH_ANIM, 1, 6)
+        self.image = self.animation[0]
+
+        self.rect = self.image.get_rect()
         self.rect.center = self.coords
+
+        self.anim_index = 0
+
+        self.anim_cooldown = 0
 
     def update(self, seconds):
         super().update(seconds)
+
+        if self.anim_cooldown <= 0:
+            self.anim_index = (self.anim_index + 1) % len(self.animation)
+            self.image = self.animation[self.anim_index]
+            self.anim_cooldown = HealthPack.anim_speed
+        else:
+            self.anim_cooldown -= seconds
 
         if self.collided_with_player:
             # Heal the player, possibly by using the heal() method
