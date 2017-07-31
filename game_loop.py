@@ -19,6 +19,21 @@ def game_loop(res):
     """
     Manager function that's going to be called from the start.py module.
     """
+
+    # Start the music
+    pygame.mixer.music.load(C.MUS_LEVEL_MUSIC)
+    pygame.mixer.music.set_volume(C.LEVEL_MUSIC_VOL)
+    # Loop indefinitely
+    pygame.mixer.music.play(-1)
+
+    sfx_menu_open = pygame.mixer.Sound(C.SFX_MENU_OPEN)
+
+
+    # Pause menu cooldown; that way holding esc after leaving doesn't make it
+    # reappear instantly
+    pause_cooldown = 0.0
+
+
     loop = True
     milliseconds = 0
     seconds = 0
@@ -75,7 +90,14 @@ def game_loop(res):
         if keys[pygame.K_RETURN]:
             pass
         if keys[pygame.K_ESCAPE]:
-            pause_menu.pause_menu(C.GAME_DISPLAY)
+            if pause_cooldown <= 0.0:
+                pause_cooldown = C.PAUSE_COOLDOWN
+                pygame.mixer.music.pause()
+                sfx_menu_open.play()
+                pause_menu.pause_menu(C.GAME_DISPLAY)
+                pygame.mixer.music.unpause()
+            else:
+                pause_cooldown -= seconds
 
         #check for other events
         for event in pygame.event.get():

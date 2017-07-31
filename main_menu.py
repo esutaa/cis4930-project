@@ -43,6 +43,10 @@ def main_menu():
     """
     Manages the main menu when the game is first entered.
     """
+
+    sfx_menu_move = pygame.mixer.Sound(C.SFX_MENU_MOVE)
+    sfx_menu_close = pygame.mixer.Sound(C.SFX_MENU_CLOSE)
+
     intro = True
 
     selected_option = 0
@@ -56,11 +60,14 @@ def main_menu():
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     if selected_option > 0:
                         selected_option -= 1
+                        sfx_menu_move.play()
                 elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     if selected_option < (len(START_OPTIONS) - 1):
                         selected_option += 1
+                        sfx_menu_move.play()
                 elif event.key == pygame.K_RETURN:
                     if START_OPTIONS[selected_option] == "Start":
+                        sfx_menu_close.play()
                         return
                     elif START_OPTIONS[selected_option] == "Exit":
                         pygame.quit()

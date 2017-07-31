@@ -48,6 +48,7 @@ RIGHT = "right"
 
 # Gameplay constants
 SPRITE_BASE_SPEED = 25
+PAUSE_COOLDOWN = 1.0 # how frequently the pause menu can be activated
 HEALTH_PACK_HEAL_AMT = 50
 
 # Image dimension constants
@@ -85,6 +86,13 @@ SFX_PLAYER_STEP = "resources/sfx/player_step.ogg"
 SFX_HIT_SMALL = "resources/sfx/hit_small.ogg"
 SFX_HIT_BIG = "resources/sfx/hit_big.ogg"
 SFX_HIT_DIE = "resources/sfx/hit_die.ogg"
+SFX_MENU_OPEN = "resources/sfx/menu_open.ogg"
+SFX_MENU_CLOSE = "resources/sfx/menu_close.ogg"
+SFX_MENU_MOVE = "resouces/sfx/menu_move.ogg"
+
+# Music resource paths
+MUS_LEVEL_MUSIC = "resources/music/level_music.ogg"
+LEVEL_MUSIC_VOL = 0.7
 
 # Misc sound constants
 STEP_FREQUENCY = 1.7 # How often a step sound is played when moving
