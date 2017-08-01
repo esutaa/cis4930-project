@@ -74,7 +74,8 @@ ROOM_FILES_PATH = "resources/maps/."
 NUM_OF_ROOMS = len(os.listdir(ROOM_FILES_PATH))
 
 # Image resource paths
-S_PLAYER = "resources/sprites/s_player_noBG.png"
+S_PLAYER = "resources/sprites/beowulf.png"
+GHOST = "resources/sprites/ghost.png"
 
 T_FLOOR = "resources/tiles/t_floor.png"
 T_HOLE = "resources/tiles/t_hole.png"
