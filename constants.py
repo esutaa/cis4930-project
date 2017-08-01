@@ -48,6 +48,7 @@ RIGHT = "right"
 
 # Gameplay constants
 SPRITE_BASE_SPEED = 25
+ENEMY_BASE_SPEED = 6
 PAUSE_COOLDOWN = 1.0 # how frequently the pause menu can be activated
 HEALTH_PACK_HEAL_AMT = 50
 
