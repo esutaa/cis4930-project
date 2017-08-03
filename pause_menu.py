@@ -41,6 +41,9 @@ def pause_menu(game_surface):
     """
     Manages the pause menu
     """
+
+    sfx_menu_move = pygame.mixer.Sound(C.SFX_MENU_MOVE)
+    sfx_menu_close = pygame.mixer.Sound(C.SFX_MENU_CLOSE)
     paused = True
 
     selected_option = 0
@@ -57,16 +60,20 @@ def pause_menu(game_surface):
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     if selected_option > 0:
                         selected_option -= 1
+                        sfx_menu_move.play()
                 elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     if selected_option < (len(PAUSE_OPTIONS) - 1):
                         selected_option += 1
+                        sfx_menu_move.play()
                 elif event.key == pygame.K_RETURN:
                     if PAUSE_OPTIONS[selected_option] == "Resume":
+                        sfx_menu_close.play()
                         return
                     elif PAUSE_OPTIONS[selected_option] == "Exit":
                         pygame.quit()
                         quit()
                 elif event.key == pygame.K_ESCAPE:
+                    sfx_menu_close.play()
                     return
 
         C.GAME_DISPLAY.blit(game_surface, (0, 0))

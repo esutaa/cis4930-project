@@ -14,6 +14,8 @@ structure that's used by the game loop generically.
 import pygame
 import constants as C
 import generate_room
+import random
+import items
 
 class Resources:
     """
@@ -22,17 +24,11 @@ class Resources:
     the main game loop begins.
     """
     def __init__(self):
-        # Create sprite groups
-        self.g_all_sprites = pygame.sprite.Group()
-        self.g_player_sprites = pygame.sprite.Group()
-        self.g_collidable_sprites = pygame.sprite.Group()
-
-        # Assign groups to sprites
-        PlayerCharacter.groups = self.g_player_sprites, self.g_collidable_sprites
 
         # Instantiate sprites
-        self.player = PlayerCharacter((C.DISPLAY_WIDTH/2, C.DISPLAY_HEIGHT/2))
- 
+        self.player = PlayerCharacter((C.DISPLAY_WIDTH/2, (C.DISPLAY_HEIGHT/2)+128))
+        self.ghost = Ghost(C.DISPLAY_WIDTH, C.DISPLAY_HEIGHT)
+
         # Create rooms
         # TODO: make this more robust, right now it only loads the one test room
         self.rooms = list()
@@ -55,39 +51,26 @@ class LivingEntity(pygame.sprite.Sprite):
         self.dx = C.SPRITE_BASE_SPEED
         self.dy = C.SPRITE_BASE_SPEED
 
-      
-        #C.health = 100 # moved to constants.py
-        self.health_bar(C.GAME_DISPLAY, 300, 500, C.health) # need to get proper x/y coordinates to make bar hover over sprites
-                                                        # need to blit to screen?
-               
-
         self.pos = startpos
         self.x = self.pos[0]
         self.y = self.pos[1]
-        
+
         # Used for keeping track of previous location when moving
         self.old_pos = startpos
         self.old_x = self.old_pos[0]
         self.old_y = self.old_pos[1]
 
+        # How long the entity has been alive
+        self.seconds = 0
 
-    def health_bar(self, screen, x, y, healthLevel):
-        # need to blit ontop of C.GAME_DISPLAY to allow for overhead health bar for sprites?
-        
-        fill = (healthLevel / 100) * C.barLength
-        outlineBar = pygame.Rect(x, y, C.barLength, C.barHeight)
-        fillBar = pygame.Rect(x, y, fill, C.barHeight)
-        if(healthLevel >= 75):
-            pygame.draw.rect(screen, C.GREEN, fillBar)
-        elif(healthLevel > 50):
-            pygame.draw.rect(screen, C.YELLOW, fillBar)
-        else:
-            pygame.draw.rect(screen, C.RED, fillBar)
-        pygame.draw.rect(screen, C.BLACK, outlineBar, 2)
-        
-        
+        # Can this entity fly? I.e hover over floor tiles
+        self.floating = False
+
+        self.current_direction = C.DOWN
 
     def move(self, direction, seconds):
+
+        self.current_direction = direction
 
         move_amt = 0
         if direction is C.RIGHT:
@@ -119,14 +102,23 @@ class LivingEntity(pygame.sprite.Sprite):
         self.rect.center = self.pos
 
         collisions = pygame.sprite.spritecollide(self, C.G_SOLID_TILES, False, pygame.sprite.collide_rect)
+
         if len(collisions) is not 0:
             self.x = self.old_x
             self.y = self.old_y
             self.pos = (self.x, self.y)
             self.rect.center = self.pos
+        if self.floating is False:
+            collisions = pygame.sprite.spritecollide(self, C.G_HOLE_TILES, False, pygame.sprite.collide_rect)
+            if len(collisions) is not 0:
+                self.x = self.old_x
+                self.y = self.old_y
+                self.pos = (self.x, self.y)
+                self.rect.center = self.pos
 
     def update(self, seconds):
         pygame.sprite.Sprite.update(self, seconds)
+        self.seconds += seconds
 
 
 class PlayerCharacter(LivingEntity):
@@ -137,14 +129,303 @@ class PlayerCharacter(LivingEntity):
     # Data that's shared between all PlayerSprite objects
     image = pygame.image.load(C.S_PLAYER)
 
+    sfx_attack_swing = pygame.mixer.Sound(C.SFX_HIT_SMALL)
+
+    attack_freq = 3.0 # How often the player is allowed to attack
+
     def __init__(self, startpos):
         super().__init__(startpos)
 
         self.sprite = PlayerCharacter.image
         self.rect = self.sprite.get_rect()
 
+        self.health = 100
+        self.health_bar(C.GAME_DISPLAY, 300, 500) # display health bar
+
+        self.sfx_step = pygame.mixer.Sound(C.SFX_PLAYER_STEP)
+        self.sfx_step.set_volume(C.PLAYER_STEP_VOL) 
+        # The last time the step sound was played
+        self.step_cooldown = 0.0
+
+        self.attacking = False
+        self.attacking_cooldown = 0.0
+
+    def health_bar(self, screen, x, y):
+        #self.health -= damage
+        self.fill = (self.health / 100) * C.barLength
+        self.outlineBar = pygame.Rect(x, y, C.barLength, C.barHeight)
+        self.fillBar = pygame.Rect(x, y, self.fill, C.barHeight)
+        if(self.health >= 75):
+            pygame.draw.rect(screen, C.GREEN, self.fillBar)
+        elif(self.health > 50):
+            pygame.draw.rect(screen, C.YELLOW, self.fillBar)
+        elif(self.health <= 50):
+            pygame.draw.rect(screen, C.RED, self.fillBar)
+        pygame.draw.rect(screen, C.BLACK, self.outlineBar, 2)  # draws black outline around healthbar
+
+    def damage(self, amount):
+        #C.health -= amount
+        self.health -= amount    
+    def heal(self, amount):
+        #C.health += amount
+        self.health -= amount
+
+    def move(self, direction, seconds):
+        # Don't move if attacking
+        if self.attacking is True:
+            return
+
+        super().move(direction, seconds)
+        
+        if self.step_cooldown <= 0.0:
+            self.sfx_step.play()
+            self.step_cooldown = C.STEP_FREQUENCY
+
+    def attack(self):
+        if self.attacking is True:
+            return
+
+        if self.attacking_cooldown > 0.0:
+            return
+
+        self.attacking = True
+
+        PlayerCharacter.sfx_attack_swing.play()
+
+        if self.current_direction == C.UP:
+            self.weapon = items.Sword((self.rect.center[0], self.rect.center[1] - 64), self.current_direction)
+        elif self.current_direction == C.DOWN:
+            self.weapon = items.Sword((self.rect.center[0], self.rect.center[1] + 64), self.current_direction)
+        elif self.current_direction == C.LEFT:
+            self.weapon = items.Sword((self.rect.center[0] - 64, self.rect.center[1]), self.current_direction)
+        elif self.current_direction == C.RIGHT:
+            self.weapon = items.Sword((self.rect.center[0] + 64, self.rect.center[1]), self.current_direction)
+
     def update(self, seconds):
         """
         Updates on the sprite to run
         """
-        pass
+        super().update(seconds)
+
+        if self.attacking is True:
+            if self.weapon.swing(seconds) is False:
+                self.weapon.kill()
+                self.attacking = False
+                self.attacking_cooldown = PlayerCharacter.attack_freq
+
+        if self.attacking_cooldown > 0.0:
+            self.attacking_cooldown -= seconds
+
+        if self.step_cooldown > 0.0:
+            self.step_cooldown -= seconds
+            if self.step_cooldown < 0.0:
+                self.step_cooldown = 0.0
+
+
+
+"""Note to reader: The AI for this game is produced through an image
+of a graph in my head. UL = UPPER LEFT-MOST, UR = UPPER RIGHT-MOST,
+DL = BOTTOM LEFT-MOST, DR = BOTTOM RIGHT-MOST of the graph(screen).
+This is used to find the position of the player in order to find
+the X/Y coordinate, follow it and attack.
+
+BEWARE. This segment needs a lot of improvement most likely, but
+here's the gist of it."""
+
+class Ghost(pygame.sprite.Sprite):
+    image = pygame.image.load(C.GHOST)
+
+    sfx_die = pygame.mixer.Sound(C.SFX_HIT_DIE)
+
+    damage_freq = 2.0 # How often the sprite can take damage
+
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.health = 50.0
+
+        self.frame = 0
+        self.gimage = Ghost.image
+        self.rect = self.gimage.get_rect()
+        self.rect.y = random.randint(70, 455)  
+        self.rect.x = random.randint(70, 675)
+        self.facing = random.choice((-1,1)) * C.ENEMY_BASE_SPEED
+        self.facing_two = random.choice((-1, 1))
+
+        self.damage_cooldown = 0.0
+
+    def take_damage(self, amt):
+        if self.damage_cooldown <= 0.0:
+            self.health -= amt
+            self.damage_cooldown = Ghost.damage_freq
+            if self.health <= 0:
+                Ghost.sfx_die.play()
+                self.kill()
+
+    def update(self, seconds, playerX, playerY):
+        if self.damage_cooldown > 0:
+            self.damage_cooldown -= seconds
+
+        self.rect.move_ip(self.facing, self.facing_two)
+        '''print ("Y: ", self.rect.y)
+        print ("X: ", self.rect.x)
+        print ("Facing: ", self.facing)
+        print ("FACINGTWO: ", self.facing_two)'''
+
+        #Collission checking for walls for ghost
+        if (self.rect.y > C.DISPLAY_HEIGHT - 145):
+            self.rect.y = C.DISPLAY_HEIGHT - 145
+            self.facing_two = -self.facing_two
+            #print ("In FIRST Y")
+
+        if (self.rect.y < 30):
+            self.rect.y = 30
+            self.facing_two = -self.facing_two
+            #print ("In SECOND Y")
+
+        if (self.rect.x > C.DISPLAY_WIDTH - 125):
+            self.rect.x = C.DISPLAY_WIDTH - 125
+            self.facing = -self.facing
+            #print ("In FIRST X")
+
+        if (self.rect.x < 30):
+            self.rect.x = 30
+            self.facing = -self.facing
+            #print ("In SECOND X")
+
+        #Checking UL
+        if (playerX < 400  and playerY < 400):
+
+            #UR - Getting closer, using x coordinate
+            if (self.rect.x >= 400 and self.rect.y < 300):
+                self.facing = self.facing - 1 
+                #print ("********IN UR")
+
+            #DR - Getting closer using y and x coordinates
+            elif (self.rect.x >= 400 and self.rect.y >= 300):
+                self.facing = self.facing - 1
+                self.facing_two = self.facing_two - 1
+                #print ("*********IN DR")
+
+            #DL - Getting closer using y coordinate
+            elif (self.rect.x < 400  and self.rect.y >= 300):
+                self.facing_two = self.facing_two - 1
+                #print ("*********IN DL")
+
+            #UL - AKA Finally in same position
+            elif (self.rect.x < 400 and self.rect.y < 300):
+                self.inSamePlace(playerX, playerY)
+
+        #Checking UR
+        if (playerX >= 400  and playerY < 400):
+
+            #UL - Getting closer, using x coordinate
+            if (self.rect.x < 400 and self.rect.y < 300):
+                self.facing = self.facing + 1 
+                #print ("********IN UL/UR")
+
+            #DR - Getting closer using y coordinates
+            elif (self.rect.x >= 400 and self.rect.y >= 300):
+                self.facing_two = self.facing_two - 1
+                #print ("*********IN DR/UR")
+
+            #DL - Getting closer using x/y coordinate
+            elif (self.rect.x < 400  and self.rect.y >= 300):
+                self.facing_two = self.facing_two + 1
+                self.facing = self.facing + 1
+                #print ("*********IN DL/UR")
+
+            #UR - AKA Finally in same position
+            elif (self.rect.x >= 400 and self.rect.y < 300):
+                self.inSamePlace(playerX, playerY)
+
+        #Checking DL
+        if (playerX < 400  and playerY >= 400):
+
+            #UL - Getting closer, using y coordinate
+            if (self.rect.x < 400 and self.rect.y < 300):
+                self.facing_two = self.facing_two + 1 
+                #print ("********IN UL/DL")
+
+            #UR - Getting closer, using x/y coordinate
+            elif (self.rect.x >= 400 and self.rect.y < 300):
+                self.facing = self.facing - 1
+                self.facing_two = self.facing_two - 1
+                #print ("********IN UR/DL")
+
+            #DR - Getting closer using x coordinates
+            elif (self.rect.x >= 400 and self.rect.y >= 300):
+                self.facing = self.facing - 1
+                #print ("*********IN DR/DL")
+
+            #DL - AKA Finally in same position
+            elif (self.rect.x < 400  and self.rect.y >= 300):
+                self.inSamePlace(playerX, playerY)
+
+        #Checking DR
+        if (playerX >= 400  and playerY >= 400):
+
+            #UL - Getting closer, using y coordinate
+            if (self.rect.x < 400 and self.rect.y < 300):
+                self.facing_two = self.facing_two + 1
+                self.facing = self.facing + 1
+                #print ("********IN UL/DR")
+
+            #UR - Getting closer, using y coordinate
+            elif (self.rect.x >= 400 and self.rect.y < 300):
+                self.facing_two = self.facing_two + 1
+                #print ("********IN UR/DL")
+
+            #DL - Getting closer using x coordinates
+            elif (self.rect.x < 400  and self.rect.y >= 300):
+                self.facing = self.facing + 1
+                #print ("*********IN DL/DR")
+
+            #DR - AKA Finally in same position
+            elif (self.rect.x >= 400 and self.rect.y >= 300):
+                self.inSamePlace(playerX, playerY)
+
+
+
+        #Controlling speed of ghost, so it doesn't go haywire
+        if self.facing > C.ENEMY_BASE_SPEED:
+            self.facing = C.ENEMY_BASE_SPEED
+        elif self.facing < -C.ENEMY_BASE_SPEED:
+            self.facing = -C.ENEMY_BASE_SPEED
+
+        if self.facing_two > C.ENEMY_BASE_SPEED:
+            self.facing_two = C.ENEMY_BASE_SPEED
+        elif self.facing_two < -C.ENEMY_BASE_SPEED:
+            self.facing_two = -C.ENEMY_BASE_SPEED
+
+        self.frame = self.frame + 1
+
+    #If location is found on graph (screen), then attack! Or get close.
+    def inSamePlace(self, playerX, playerY):
+        if (self.rect.x == playerX and self.rect.y < playerY):
+            #print ("In X, Y <")
+            self.facing_two = self.facing_two + 1
+        elif (self.rect.x == playerX and self.rect.y > playerY):
+            self.facing_two = self.facing_two - 1
+            #print ("In X, Y >")
+        elif (self.rect.x < playerX and self.rect.y == playerY):
+            self.facing = self.facing + 1
+            #print ("In X <, Y")                   
+        elif (self.rect.x > playerX and self.rect.y == playerY):
+            self.facing = self.facing - 1
+            #print ("In X >, Y ")
+        elif (self.rect.x < playerX and self.rect.y < playerY):
+            self.facing = self.facing + 1
+            self.facing_two = self.facing + 1
+            #print("^^^^^^^^IN ONE")
+        elif (self.rect.x > playerX and self.rect.y > playerY):
+            self.facing = self.facing - 1
+            self.facing_two = self.facing_two - 1
+            #print("^^^^^^^^IN TWO")
+        elif (self.facing > playerX and self.rect.y < playerY):
+            self.facing = self.facing - 1
+            self.facing_two = self.facing_two + 1
+            #print ("^^^^^^^IN FOUR")
+
+PlayerCharacter.groups = C.G_PLAYER_SPRITE
+Ghost.groups = C.G_ENEMY_SPRITE

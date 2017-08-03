@@ -7,7 +7,8 @@ PyLint demands that I put all globals in uppercase.
 '''
 import pygame
 import os # For getting the number of map files in a directory
-
+pygame.mixer.pre_init(44100, -16, 2, 2048)
+pygame.init()
 
 # Display properties
 DISPLAY_WIDTH = 800
@@ -21,6 +22,7 @@ YELLOW = (255,255,0)
 RED = (255,0,0)
 #WHITE = (255, 255, 255)
 health = 100
+
 
 # Create a display surface
 GAME_DISPLAY = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
@@ -56,7 +58,10 @@ RIGHT = "right"
 
 # Gameplay constants
 SPRITE_BASE_SPEED = 25
-
+ENEMY_BASE_SPEED = 6
+PAUSE_COOLDOWN = 1.0 # how frequently the pause menu can be activated
+HEALTH_PACK_HEAL_AMT = 50
+SWORD_DAMAGE = 10.0
 
 # Image dimension constants
 PLAYER_SPRITE_WIDTH = 32
@@ -68,18 +73,44 @@ TILE_HEIGHT = 32
 # Groups
 G_EVENT_TILES = pygame.sprite.Group()
 G_SOLID_TILES = pygame.sprite.Group()
+G_HOLE_TILES = pygame.sprite.Group()
 G_ABOVE_TILES = pygame.sprite.Group()
 G_BELOW_TILES = pygame.sprite.Group()
-
+G_PLAYER_SPRITE = pygame.sprite.Group()
+G_SWORD_SPRITE = pygame.sprite.Group()
+G_ITEMS = pygame.sprite.Group()
+G_ENEMY_SPRITE = pygame.sprite.Group()
 
 # Room generation constants
 ROOM_FILES_PATH = "resources/maps/."
 NUM_OF_ROOMS = len(os.listdir(ROOM_FILES_PATH))
 
 # Image resource paths
-#S_PLAYER = "resources/sprites/s_player.png"
-S_PLAYER = "resources/sprites/s_player_noBG.png"
+S_PLAYER = "resources/sprites/beowulf.png"
+S_SWORD_ANIM = "resources/sprites/s_sword_swing_anim.png"
+GHOST = "resources/sprites/ghost.png"
 
 T_FLOOR = "resources/tiles/t_floor.png"
 T_HOLE = "resources/tiles/t_hole.png"
 T_WALL = "resources/tiles/t_wall.png"
+
+S_HEALTH = "resources/sprites/s_health.png"
+S_HEALTH_ANIM = "resources/sprites/s_health_anim.png"
+
+
+# Sound resource paths
+SFX_PLAYER_STEP = "resources/sfx/player_step.ogg"
+SFX_HIT_SMALL = "resources/sfx/hit_small.ogg"
+SFX_HIT_BIG = "resources/sfx/hit_big.ogg"
+SFX_HIT_DIE = "resources/sfx/hit_die.ogg"
+SFX_MENU_OPEN = "resources/sfx/menu_open.ogg"
+SFX_MENU_CLOSE = "resources/sfx/menu_close.ogg"
+SFX_MENU_MOVE = "resources/sfx/menu_move.ogg"
+
+# Music resource paths
+MUS_LEVEL_MUSIC = "resources/music/level_music.ogg"
+LEVEL_MUSIC_VOL = 0.7
+
+# Misc sound constants
+STEP_FREQUENCY = 1.7 # How often a step sound is played when moving
+PLAYER_STEP_VOL = 0.4
