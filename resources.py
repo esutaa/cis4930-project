@@ -129,6 +129,8 @@ class PlayerCharacter(LivingEntity):
     # Data that's shared between all PlayerSprite objects
     image = pygame.image.load(C.S_PLAYER)
 
+    sfx_attack_swing = pygame.mixer.Sound(C.SFX_HIT_SMALL)
+
     attack_freq = 3.0 # How often the player is allowed to attack
 
     def __init__(self, startpos):
@@ -165,6 +167,8 @@ class PlayerCharacter(LivingEntity):
             return
 
         self.attacking = True
+
+        PlayerCharacter.sfx_attack_swing.play()
 
         if self.current_direction == C.UP:
             self.weapon = items.Sword((self.rect.center[0], self.rect.center[1] - 64), self.current_direction)
@@ -209,6 +213,8 @@ here's the gist of it."""
 class Ghost(pygame.sprite.Sprite):
     image = pygame.image.load(C.GHOST)
 
+    sfx_die = pygame.mixer.Sound(C.SFX_HIT_DIE)
+
     damage_freq = 2.0 # How often the sprite can take damage
 
     def __init__(self, x, y):
@@ -231,6 +237,7 @@ class Ghost(pygame.sprite.Sprite):
             self.health -= amt
             self.damage_cooldown = Ghost.damage_freq
             if self.health <= 0:
+                Ghost.sfx_die.play()
                 self.kill()
 
     def update(self, seconds, playerX, playerY):
