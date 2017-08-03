@@ -149,7 +149,6 @@ class PlayerCharacter(LivingEntity):
     def move(self, direction, seconds):
         # Don't move if attacking
         if self.attacking is True:
-            print("Currently attacking, returning")
             return
 
         super().move(direction, seconds)

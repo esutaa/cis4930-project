@@ -87,7 +87,7 @@ def game_loop(res):
         i.e. swing a sword could be detected by key_down event and have an
         attack speed related cooldown, rather then checking if the key is held
         '''
-        if keys[pygame.K_RETURN]:
+        if keys[pygame.K_RETURN] or keys[pygame.K_SPACE]:
             res.player.attack()
         if keys[pygame.K_ESCAPE]:
             if pause_cooldown <= 0.0:

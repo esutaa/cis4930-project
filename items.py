@@ -61,7 +61,7 @@ HealthPack.groups = C.G_ITEMS
 # superclass
 class Sword(pygame.sprite.Sprite):
     
-    anim_speed = 0.2
+    anim_speed = 0.1
  
     def __init__(self, coords, direction):
 
