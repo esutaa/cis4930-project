@@ -14,6 +14,7 @@ structure that's used by the game loop generically.
 import pygame
 import constants as C
 import generate_room
+import random
 
 class Resources:
     """
@@ -25,6 +26,7 @@ class Resources:
 
         # Instantiate sprites
         self.player = PlayerCharacter((C.DISPLAY_WIDTH/2, (C.DISPLAY_HEIGHT/2)+128))
+        self.ghost = Ghost(C.DISPLAY_WIDTH, C.DISPLAY_HEIGHT)
 
         # Create rooms
         # TODO: make this more robust, right now it only loads the one test room
@@ -149,5 +151,191 @@ class PlayerCharacter(LivingEntity):
             self.step_cooldown -= seconds
             if self.step_cooldown < 0.0:
                 self.step_cooldown = 0.0
+                
+"""Note to reader: The AI for this game is produced through an image
+of a graph in my head. UL = UPPER LEFT-MOST, UR = UPPER RIGHT-MOST,
+DL = BOTTOM LEFT-MOST, DR = BOTTOM RIGHT-MOST of the graph(screen).
+This is used to find the position of the player in order to find
+the X/Y coordinate, follow it and attack.
+
+BEWARE. This segment needs a lot of improvement most likely, but
+here's the gist of it."""
+
+class Ghost(pygame.sprite.Sprite):
+    image = pygame.image.load(C.GHOST)
+
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.frame = 0
+        self.gimage = Ghost.image
+        self.rect = self.gimage.get_rect()
+        self.rect.y = random.randint(70, 455)  
+        self.rect.x = random.randint(70, 675)
+        self.facing = random.choice((-1,1)) * C.ENEMY_BASE_SPEED
+        self.facing_two = random.choice((-1, 1))
+
+    def update(self, playerX, playerY):
+        self.rect.move_ip(self.facing, self.facing_two)
+        '''print ("Y: ", self.rect.y)
+        print ("X: ", self.rect.x)
+        print ("Facing: ", self.facing)
+        print ("FACINGTWO: ", self.facing_two)'''
+
+        #Collission checking for walls for ghost
+        if (self.rect.y > C.DISPLAY_HEIGHT - 145):
+            self.rect.y = C.DISPLAY_HEIGHT - 145
+            self.facing_two = -self.facing_two
+            #print ("In FIRST Y")
+
+        if (self.rect.y < 30):
+            self.rect.y = 30
+            self.facing_two = -self.facing_two
+            #print ("In SECOND Y")
+
+        if (self.rect.x > C.DISPLAY_WIDTH - 125):
+            self.rect.x = C.DISPLAY_WIDTH - 125
+            self.facing = -self.facing
+            #print ("In FIRST X")
+
+        if (self.rect.x < 30):
+            self.rect.x = 30
+            self.facing = -self.facing
+            #print ("In SECOND X")
+
+        #Checking UL
+        if (playerX < 400  and playerY < 400):
+
+            #UR - Getting closer, using x coordinate
+            if (self.rect.x >= 400 and self.rect.y < 300):
+                self.facing = self.facing - 1 
+                #print ("********IN UR")
+
+            #DR - Getting closer using y and x coordinates
+            elif (self.rect.x >= 400 and self.rect.y >= 300):
+                self.facing = self.facing - 1
+                self.facing_two = self.facing_two - 1
+                #print ("*********IN DR")
+
+            #DL - Getting closer using y coordinate
+            elif (self.rect.x < 400  and self.rect.y >= 300):
+                self.facing_two = self.facing_two - 1
+                #print ("*********IN DL")
+
+            #UL - AKA Finally in same position
+            elif (self.rect.x < 400 and self.rect.y < 300):
+                self.inSamePlace(playerX, playerY)
+
+        #Checking UR
+        if (playerX >= 400  and playerY < 400):
+
+            #UL - Getting closer, using x coordinate
+            if (self.rect.x < 400 and self.rect.y < 300):
+                self.facing = self.facing + 1 
+                #print ("********IN UL/UR")
+
+            #DR - Getting closer using y coordinates
+            elif (self.rect.x >= 400 and self.rect.y >= 300):
+                self.facing_two = self.facing_two - 1
+                #print ("*********IN DR/UR")
+
+            #DL - Getting closer using x/y coordinate
+            elif (self.rect.x < 400  and self.rect.y >= 300):
+                self.facing_two = self.facing_two + 1
+                self.facing = self.facing + 1
+                #print ("*********IN DL/UR")
+
+            #UR - AKA Finally in same position
+            elif (self.rect.x >= 400 and self.rect.y < 300):
+                self.inSamePlace(playerX, playerY)
+
+        #Checking DL
+        if (playerX < 400  and playerY >= 400):
+
+            #UL - Getting closer, using y coordinate
+            if (self.rect.x < 400 and self.rect.y < 300):
+                self.facing_two = self.facing_two + 1 
+                #print ("********IN UL/DL")
+
+            #UR - Getting closer, using x/y coordinate
+            elif (self.rect.x >= 400 and self.rect.y < 300):
+                self.facing = self.facing - 1
+                self.facing_two = self.facing_two - 1
+                #print ("********IN UR/DL")
+
+            #DR - Getting closer using x coordinates
+            elif (self.rect.x >= 400 and self.rect.y >= 300):
+                self.facing = self.facing - 1
+                #print ("*********IN DR/DL")
+
+            #DL - AKA Finally in same position
+            elif (self.rect.x < 400  and self.rect.y >= 300):
+                self.inSamePlace(playerX, playerY)
+
+        #Checking DR
+        if (playerX >= 400  and playerY >= 400):
+
+            #UL - Getting closer, using y coordinate
+            if (self.rect.x < 400 and self.rect.y < 300):
+                self.facing_two = self.facing_two + 1
+                self.facing = self.facing + 1
+                #print ("********IN UL/DR")
+
+            #UR - Getting closer, using y coordinate
+            elif (self.rect.x >= 400 and self.rect.y < 300):
+                self.facing_two = self.facing_two + 1
+                #print ("********IN UR/DL")
+
+            #DL - Getting closer using x coordinates
+            elif (self.rect.x < 400  and self.rect.y >= 300):
+                self.facing = self.facing + 1
+                #print ("*********IN DL/DR")
+
+            #DR - AKA Finally in same position
+            elif (self.rect.x >= 400 and self.rect.y >= 300):
+                self.inSamePlace(playerX, playerY)
+
+
+
+        #Controlling speed of ghost, so it doesn't go haywire
+        if self.facing > C.ENEMY_BASE_SPEED:
+            self.facing = C.ENEMY_BASE_SPEED
+        elif self.facing < -C.ENEMY_BASE_SPEED:
+            self.facing = -C.ENEMY_BASE_SPEED
+
+        if self.facing_two > C.ENEMY_BASE_SPEED:
+            self.facing_two = C.ENEMY_BASE_SPEED
+        elif self.facing_two < -C.ENEMY_BASE_SPEED:
+            self.facing_two = -C.ENEMY_BASE_SPEED
+
+        self.frame = self.frame + 1
+
+    #If location is found on graph (screen), then attack! Or get close.
+    def inSamePlace(self, playerX, playerY):
+        if (self.rect.x == playerX and self.rect.y < playerY):
+            #print ("In X, Y <")
+            self.facing_two = self.facing_two + 1
+        elif (self.rect.x == playerX and self.rect.y > playerY):
+            self.facing_two = self.facing_two - 1
+            #print ("In X, Y >")
+        elif (self.rect.x < playerX and self.rect.y == playerY):
+            self.facing = self.facing + 1
+            #print ("In X <, Y")                   
+        elif (self.rect.x > playerX and self.rect.y == playerY):
+            self.facing = self.facing - 1
+            #print ("In X >, Y ")
+        elif (self.rect.x < playerX and self.rect.y < playerY):
+            self.facing = self.facing + 1
+            self.facing_two = self.facing + 1
+            #print("^^^^^^^^IN ONE")
+        elif (self.rect.x > playerX and self.rect.y > playerY):
+            self.facing = self.facing - 1
+            self.facing_two = self.facing_two - 1
+            #print("^^^^^^^^IN TWO")
+        elif (self.facing > playerX and self.rect.y < playerY):
+            self.facing = self.facing - 1
+            self.facing_two = self.facing_two + 1
+            #print ("^^^^^^^IN FOUR")
 
 PlayerCharacter.groups = C.G_PLAYER_SPRITE
+Ghost.groups = C.G_ENEMY_SPRITE

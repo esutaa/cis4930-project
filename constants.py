@@ -48,6 +48,7 @@ RIGHT = "right"
 
 # Gameplay constants
 SPRITE_BASE_SPEED = 25
+ENEMY_BASE_SPEED = 6
 PAUSE_COOLDOWN = 1.0 # how frequently the pause menu can be activated
 HEALTH_PACK_HEAL_AMT = 50
 
@@ -66,13 +67,15 @@ G_ABOVE_TILES = pygame.sprite.Group()
 G_BELOW_TILES = pygame.sprite.Group()
 G_PLAYER_SPRITE = pygame.sprite.Group()
 G_ITEMS = pygame.sprite.Group()
+G_ENEMY_SPRITE = pygame.sprite.Group()
 
 # Room generation constants
 ROOM_FILES_PATH = "resources/maps/."
 NUM_OF_ROOMS = len(os.listdir(ROOM_FILES_PATH))
 
 # Image resource paths
-S_PLAYER = "resources/sprites/s_player_noBG.png"
+S_PLAYER = "resources/sprites/beowulf.png"
+GHOST = "resources/sprites/ghost.png"
 
 T_FLOOR = "resources/tiles/t_floor.png"
 T_HOLE = "resources/tiles/t_hole.png"

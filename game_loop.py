@@ -110,12 +110,14 @@ def game_loop(res):
         C.G_BELOW_TILES.draw(C.GAME_DISPLAY)
 
         C.G_PLAYER_SPRITE.update(seconds)
+        C.G_ENEMY_SPRITE.update(res.player.pos[0], res.player.pos[1])
 
         C.G_ITEMS.clear(C.GAME_DISPLAY, C.BACKGROUND)
         C.G_ITEMS.update(seconds)
         C.G_ITEMS.draw(C.GAME_DISPLAY)
 
         C.G_PLAYER_SPRITE.draw(C.GAME_DISPLAY)
+        C.G_ENEMY_SPRITE.draw(C.GAME_DISPLAY)
 
         C.G_ABOVE_TILES.clear(C.GAME_DISPLAY, C.BACKGROUND)
         C.G_ABOVE_TILES.update(seconds)
