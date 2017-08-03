@@ -51,6 +51,7 @@ SPRITE_BASE_SPEED = 25
 ENEMY_BASE_SPEED = 6
 PAUSE_COOLDOWN = 1.0 # how frequently the pause menu can be activated
 HEALTH_PACK_HEAL_AMT = 50
+SWORD_DAMAGE = 10.0
 
 # Image dimension constants
 PLAYER_SPRITE_WIDTH = 32
@@ -66,6 +67,7 @@ G_HOLE_TILES = pygame.sprite.Group()
 G_ABOVE_TILES = pygame.sprite.Group()
 G_BELOW_TILES = pygame.sprite.Group()
 G_PLAYER_SPRITE = pygame.sprite.Group()
+G_SWORD_SPRITE = pygame.sprite.Group()
 G_ITEMS = pygame.sprite.Group()
 G_ENEMY_SPRITE = pygame.sprite.Group()
 
@@ -75,6 +77,7 @@ NUM_OF_ROOMS = len(os.listdir(ROOM_FILES_PATH))
 
 # Image resource paths
 S_PLAYER = "resources/sprites/beowulf.png"
+S_SWORD_ANIM = "resources/sprites/s_sword_swing_anim.png"
 GHOST = "resources/sprites/ghost.png"
 
 T_FLOOR = "resources/tiles/t_floor.png"
@@ -83,6 +86,7 @@ T_WALL = "resources/tiles/t_wall.png"
 
 S_HEALTH = "resources/sprites/s_health.png"
 S_HEALTH_ANIM = "resources/sprites/s_health_anim.png"
+
 
 # Sound resource paths
 SFX_PLAYER_STEP = "resources/sfx/player_step.ogg"

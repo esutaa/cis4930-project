@@ -15,6 +15,7 @@ import pygame
 import constants as C
 import generate_room
 import random
+import items
 
 class Resources:
     """
@@ -65,7 +66,11 @@ class LivingEntity(pygame.sprite.Sprite):
         # Can this entity fly? I.e hover over floor tiles
         self.floating = False
 
+        self.current_direction = C.DOWN
+
     def move(self, direction, seconds):
+
+        self.current_direction = direction
 
         move_amt = 0
         if direction is C.RIGHT:
@@ -124,6 +129,10 @@ class PlayerCharacter(LivingEntity):
     # Data that's shared between all PlayerSprite objects
     image = pygame.image.load(C.S_PLAYER)
 
+    sfx_attack_swing = pygame.mixer.Sound(C.SFX_HIT_SMALL)
+
+    attack_freq = 3.0 # How often the player is allowed to attack
+
     def __init__(self, startpos):
         super().__init__(startpos)
 
@@ -135,23 +144,63 @@ class PlayerCharacter(LivingEntity):
         # The last time the step sound was played
         self.step_cooldown = 0.0
 
+        self.attacking = False
+        self.attacking_cooldown = 0.0
+
+
     def move(self, direction, seconds):
+        # Don't move if attacking
+        if self.attacking is True:
+            return
+
         super().move(direction, seconds)
         
         if self.step_cooldown <= 0.0:
             self.sfx_step.play()
             self.step_cooldown = C.STEP_FREQUENCY
 
+    def attack(self):
+        if self.attacking is True:
+            return
+
+        if self.attacking_cooldown > 0.0:
+            return
+
+        self.attacking = True
+
+        PlayerCharacter.sfx_attack_swing.play()
+
+        if self.current_direction == C.UP:
+            self.weapon = items.Sword((self.rect.center[0], self.rect.center[1] - 64), self.current_direction)
+        elif self.current_direction == C.DOWN:
+            self.weapon = items.Sword((self.rect.center[0], self.rect.center[1] + 64), self.current_direction)
+        elif self.current_direction == C.LEFT:
+            self.weapon = items.Sword((self.rect.center[0] - 64, self.rect.center[1]), self.current_direction)
+        elif self.current_direction == C.RIGHT:
+            self.weapon = items.Sword((self.rect.center[0] + 64, self.rect.center[1]), self.current_direction)
+
     def update(self, seconds):
         """
         Updates on the sprite to run
         """
         super().update(seconds)
+
+        if self.attacking is True:
+            if self.weapon.swing(seconds) is False:
+                self.weapon.kill()
+                self.attacking = False
+                self.attacking_cooldown = PlayerCharacter.attack_freq
+
+        if self.attacking_cooldown > 0.0:
+            self.attacking_cooldown -= seconds
+
         if self.step_cooldown > 0.0:
             self.step_cooldown -= seconds
             if self.step_cooldown < 0.0:
                 self.step_cooldown = 0.0
-                
+
+
+
 """Note to reader: The AI for this game is produced through an image
 of a graph in my head. UL = UPPER LEFT-MOST, UR = UPPER RIGHT-MOST,
 DL = BOTTOM LEFT-MOST, DR = BOTTOM RIGHT-MOST of the graph(screen).
@@ -164,8 +213,14 @@ here's the gist of it."""
 class Ghost(pygame.sprite.Sprite):
     image = pygame.image.load(C.GHOST)
 
+    sfx_die = pygame.mixer.Sound(C.SFX_HIT_DIE)
+
+    damage_freq = 2.0 # How often the sprite can take damage
+
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.health = 50.0
 
         self.frame = 0
         self.gimage = Ghost.image
@@ -175,7 +230,20 @@ class Ghost(pygame.sprite.Sprite):
         self.facing = random.choice((-1,1)) * C.ENEMY_BASE_SPEED
         self.facing_two = random.choice((-1, 1))
 
-    def update(self, playerX, playerY):
+        self.damage_cooldown = 0.0
+
+    def take_damage(self, amt):
+        if self.damage_cooldown <= 0.0:
+            self.health -= amt
+            self.damage_cooldown = Ghost.damage_freq
+            if self.health <= 0:
+                Ghost.sfx_die.play()
+                self.kill()
+
+    def update(self, seconds, playerX, playerY):
+        if self.damage_cooldown > 0:
+            self.damage_cooldown -= seconds
+
         self.rect.move_ip(self.facing, self.facing_two)
         '''print ("Y: ", self.rect.y)
         print ("X: ", self.rect.x)
