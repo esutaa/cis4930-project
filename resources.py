@@ -245,31 +245,23 @@ class Ghost(pygame.sprite.Sprite):
             self.damage_cooldown -= seconds
 
         self.rect.move_ip(self.facing, self.facing_two)
-        '''print ("Y: ", self.rect.y)
-        print ("X: ", self.rect.x)
-        print ("Facing: ", self.facing)
-        print ("FACINGTWO: ", self.facing_two)'''
 
         #Collission checking for walls for ghost
         if (self.rect.y > C.DISPLAY_HEIGHT - 145):
             self.rect.y = C.DISPLAY_HEIGHT - 145
             self.facing_two = -self.facing_two
-            #print ("In FIRST Y")
 
         if (self.rect.y < 30):
             self.rect.y = 30
             self.facing_two = -self.facing_two
-            #print ("In SECOND Y")
-
+            
         if (self.rect.x > C.DISPLAY_WIDTH - 125):
             self.rect.x = C.DISPLAY_WIDTH - 125
             self.facing = -self.facing
-            #print ("In FIRST X")
 
         if (self.rect.x < 30):
             self.rect.x = 30
             self.facing = -self.facing
-            #print ("In SECOND X")
 
         #Checking UL
         if (playerX < 400  and playerY < 400):
@@ -277,18 +269,15 @@ class Ghost(pygame.sprite.Sprite):
             #UR - Getting closer, using x coordinate
             if (self.rect.x >= 400 and self.rect.y < 300):
                 self.facing = self.facing - 1 
-                #print ("********IN UR")
 
             #DR - Getting closer using y and x coordinates
             elif (self.rect.x >= 400 and self.rect.y >= 300):
                 self.facing = self.facing - 1
                 self.facing_two = self.facing_two - 1
-                #print ("*********IN DR")
 
             #DL - Getting closer using y coordinate
             elif (self.rect.x < 400  and self.rect.y >= 300):
                 self.facing_two = self.facing_two - 1
-                #print ("*********IN DL")
 
             #UL - AKA Finally in same position
             elif (self.rect.x < 400 and self.rect.y < 300):
@@ -300,18 +289,15 @@ class Ghost(pygame.sprite.Sprite):
             #UL - Getting closer, using x coordinate
             if (self.rect.x < 400 and self.rect.y < 300):
                 self.facing = self.facing + 1 
-                #print ("********IN UL/UR")
 
             #DR - Getting closer using y coordinates
             elif (self.rect.x >= 400 and self.rect.y >= 300):
                 self.facing_two = self.facing_two - 1
-                #print ("*********IN DR/UR")
 
             #DL - Getting closer using x/y coordinate
             elif (self.rect.x < 400  and self.rect.y >= 300):
                 self.facing_two = self.facing_two + 1
                 self.facing = self.facing + 1
-                #print ("*********IN DL/UR")
 
             #UR - AKA Finally in same position
             elif (self.rect.x >= 400 and self.rect.y < 300):
@@ -323,18 +309,15 @@ class Ghost(pygame.sprite.Sprite):
             #UL - Getting closer, using y coordinate
             if (self.rect.x < 400 and self.rect.y < 300):
                 self.facing_two = self.facing_two + 1 
-                #print ("********IN UL/DL")
 
             #UR - Getting closer, using x/y coordinate
             elif (self.rect.x >= 400 and self.rect.y < 300):
                 self.facing = self.facing - 1
                 self.facing_two = self.facing_two - 1
-                #print ("********IN UR/DL")
 
             #DR - Getting closer using x coordinates
             elif (self.rect.x >= 400 and self.rect.y >= 300):
                 self.facing = self.facing - 1
-                #print ("*********IN DR/DL")
 
             #DL - AKA Finally in same position
             elif (self.rect.x < 400  and self.rect.y >= 300):
@@ -347,17 +330,14 @@ class Ghost(pygame.sprite.Sprite):
             if (self.rect.x < 400 and self.rect.y < 300):
                 self.facing_two = self.facing_two + 1
                 self.facing = self.facing + 1
-                #print ("********IN UL/DR")
 
             #UR - Getting closer, using y coordinate
             elif (self.rect.x >= 400 and self.rect.y < 300):
                 self.facing_two = self.facing_two + 1
-                #print ("********IN UR/DL")
 
             #DL - Getting closer using x coordinates
             elif (self.rect.x < 400  and self.rect.y >= 300):
                 self.facing = self.facing + 1
-                #print ("*********IN DL/DR")
 
             #DR - AKA Finally in same position
             elif (self.rect.x >= 400 and self.rect.y >= 300):
@@ -381,29 +361,28 @@ class Ghost(pygame.sprite.Sprite):
     #If location is found on graph (screen), then attack! Or get close.
     def inSamePlace(self, playerX, playerY):
         if (self.rect.x == playerX and self.rect.y < playerY):
-            #print ("In X, Y <")
             self.facing_two = self.facing_two + 1
+            
         elif (self.rect.x == playerX and self.rect.y > playerY):
             self.facing_two = self.facing_two - 1
-            #print ("In X, Y >")
+            
         elif (self.rect.x < playerX and self.rect.y == playerY):
-            self.facing = self.facing + 1
-            #print ("In X <, Y")                   
+            self.facing = self.facing + 1     
+            
         elif (self.rect.x > playerX and self.rect.y == playerY):
             self.facing = self.facing - 1
-            #print ("In X >, Y ")
+            
         elif (self.rect.x < playerX and self.rect.y < playerY):
             self.facing = self.facing + 1
             self.facing_two = self.facing + 1
-            #print("^^^^^^^^IN ONE")
+            
         elif (self.rect.x > playerX and self.rect.y > playerY):
             self.facing = self.facing - 1
             self.facing_two = self.facing_two - 1
-            #print("^^^^^^^^IN TWO")
+            
         elif (self.facing > playerX and self.rect.y < playerY):
             self.facing = self.facing - 1
             self.facing_two = self.facing_two + 1
-            #print ("^^^^^^^IN FOUR")
 
 PlayerCharacter.groups = C.G_PLAYER_SPRITE
 Ghost.groups = C.G_ENEMY_SPRITE
