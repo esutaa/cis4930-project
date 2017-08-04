@@ -119,7 +119,7 @@ def game_loop(res):
         if ghostReload == 0:
             ghostReload = ghostReload - 1
         #Getting the odds of a ghost showing up, so they show up at random intervals
-        #elif not int (random.random() * C.GHOST_SHOWS):
+        elif not int (random.random() * C.GHOST_SHOWS):
             g = Ghost(C.DISPLAY_WIDTH, C.DISPLAY_HEIGHT)
             ghostReload = C.GHOST_RELOAD
 
