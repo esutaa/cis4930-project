@@ -52,6 +52,8 @@ ENEMY_BASE_SPEED = 6
 PAUSE_COOLDOWN = 1.0 # how frequently the pause menu can be activated
 HEALTH_PACK_HEAL_AMT = 50
 SWORD_DAMAGE = 10.0
+GHOST_RELOAD = 150
+GHOST_SHOWS = 100
 
 # Image dimension constants
 PLAYER_SPRITE_WIDTH = 32
