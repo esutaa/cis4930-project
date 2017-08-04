@@ -13,6 +13,8 @@ import constants as C
 import pause_menu
 import generate_room
 import items
+import random
+from resources import Ghost
 
 
 def game_loop(res):
@@ -37,6 +39,8 @@ def game_loop(res):
     loop = True
     milliseconds = 0
     seconds = 0
+    
+    ghostReload = C.Ghost_RELOAD
 
     # Initial draw
     C.G_ITEMS.draw(C.GAME_DISPLAY)
@@ -104,6 +108,14 @@ def game_loop(res):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+                
+         #Reloading ghosts
+        if ghostReload == 0:
+            ghostReload = ghostReload - 1
+        #Getting the odds of a ghost showing up, so they show up at random intervals
+        elif not int (random.random() * C.GHOST_SHOWS):
+            g = Ghost(C.DISPLAY_WIDTH, C.DISPLAY_HEIGHT)
+            ghostReload = C.GHOST_RELOAD
 
         C.G_BELOW_TILES.clear(C.GAME_DISPLAY, C.BACKGROUND)
         C.G_BELOW_TILES.update(seconds)
