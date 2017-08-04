@@ -75,7 +75,8 @@ G_ENEMY_SPRITE = pygame.sprite.Group()
 
 # Room generation constants
 ROOM_FILES_PATH = "resources/maps/."
-NUM_OF_ROOMS = len(os.listdir(ROOM_FILES_PATH))
+NUM_OF_ROOMS = len(os.listdir(ROOM_FILES_PATH)) - 1f
+STR_ROOM = "resources/maps/room"
 
 # Image resource paths
 S_PLAYER = "resources/sprites/beowulf.png"

@@ -30,15 +30,44 @@ class Resources:
         self.ghost = Ghost(C.DISPLAY_WIDTH, C.DISPLAY_HEIGHT)
 
         # Create rooms
-        # TODO: make this more robust, right now it only loads the one test room
-        self.rooms = list()
-        self.rooms.append(generate_room.Room("resources/maps/m_test.txt"))
+        self.theRoom = generate_room.Room(0)
 
-    def regen_floor():
-        """
-        Create a new random floor
-        """
-        pass
+    def nextRoom(self, exit):
+        if exit == "left":
+            if self.theRoom.left == None:
+                num = random.randint(1,C.NUM_OF_ROOMS)
+                newRoom = generate_room.Room(num)
+                self.theRoom.left = newRoom
+                newRoom.right = self.theRoom
+            self.theRoom = self.theRoom.left
+            generate_room.Room(self.theRoom.index)
+
+        elif exit == "right":
+            if self.theRoom.right == None:
+                num = random.randint(1,C.NUM_OF_ROOMS)
+                newRoom = generate_room.Room(num)
+                self.theRoom.right = newRoom
+                newRoom.left = self.theRoom
+            self.theRoom = self.theRoom.right
+            generate_room.Room(self.theRoom.index)
+
+        elif exit == "top":
+            if self.theRoom.top == None:
+                num = random.randint(1,C.NUM_OF_ROOMS)
+                newRoom = generate_room.Room(num)
+                self.theRoom.top = newRoom
+                newRoom.bot = self.theRoom
+            self.theRoom = self.theRoom.top
+            generate_room.Room(self.theRoom.index)
+
+        elif exit == "bot":
+            if self.theRoom.bot == None:
+                num = random.randint(1,C.NUM_OF_ROOMS)
+                newRoom = generate_room.Room(num)
+                self.theRoom.bot = newRoom
+                newRoom.top = self.theRoom
+            self.theRoom = self.theRoom.bot
+            generate_room.Room(self.theRoom.index)
 
 
 class LivingEntity(pygame.sprite.Sprite):

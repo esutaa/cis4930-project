@@ -40,12 +40,14 @@ def game_loop(res):
     milliseconds = 0
     seconds = 0
     
-    ghostReload = C.Ghost_RELOAD
+    ghostReload = C.GHOST_RELOAD
 
     # Initial draw
     C.G_ITEMS.draw(C.GAME_DISPLAY)
 
     while loop:
+
+        #print("x: "+str(res.player.x)+" y:"+str(res.player.y))
 
         milliseconds = C.CLOCK.tick(60)
         seconds = milliseconds/100.0
@@ -72,17 +74,21 @@ def game_loop(res):
 
         '''This checks the boundaries. First two checks y cooridnates.
         Last two check the x coordiantes'''
-        if (res.player.pos[0] > C.DISPLAY_WIDTH - 50):
-            res.player.pos = (C.DISPLAY_WIDTH - 50, res.player.pos[1])
+        if (res.player.pos[0] > C.DISPLAY_WIDTH):
+            res.nextRoom("right")
+            res.player.x -= C.DISPLAY_WIDTH - 96
 
-        if (res.player.pos[0] < 50):
-            res.player.pos = (50, res.player.pos[1])
+        if (res.player.pos[0] < 0):
+            res.nextRoom("left")
+            res.player.x += C.DISPLAY_WIDTH - 96
 
-        if (res.player.pos[1] < 45):
-            res.player.pos = (res.player.pos[0], 45)
+        if (res.player.pos[1] < 0):
+            res.nextRoom("top")
+            res.player.y += C.DISPLAY_HEIGHT - 96
 
-        if (res.player.pos[1] > C.DISPLAY_HEIGHT - 70):
-            res.player.pos = (res.player.pos[0], C.DISPLAY_HEIGHT - 70)
+        if (res.player.pos[1] > C.DISPLAY_HEIGHT - 32):
+            res.nextRoom("bot")
+            res.player.y -= C.DISPLAY_HEIGHT - 96
 
         '''
         depending on how we want them to be handled in the game, keyboard
@@ -113,7 +119,7 @@ def game_loop(res):
         if ghostReload == 0:
             ghostReload = ghostReload - 1
         #Getting the odds of a ghost showing up, so they show up at random intervals
-        elif not int (random.random() * C.GHOST_SHOWS):
+        #elif not int (random.random() * C.GHOST_SHOWS):
             g = Ghost(C.DISPLAY_WIDTH, C.DISPLAY_HEIGHT)
             ghostReload = C.GHOST_RELOAD
 

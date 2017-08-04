@@ -26,12 +26,17 @@ class Room(object):
     """
     Class that creates and maintains a room state.
     """
-    def __init__(self, room_file):
+    def __init__(self, room_index):
 
         Wall.groups = C.G_ABOVE_TILES, C.G_SOLID_TILES
         Floor.groups = C.G_BELOW_TILES
         Hole.groups = C.G_BELOW_TILES, C.G_EVENT_TILES, C.G_HOLE_TILES
 
+        self.left = None
+        self.right = None
+        self.top = None
+        self.bot = None
+        self.index = room_index
 
         self.wall_list = list()
         self.floor_list = list()
@@ -40,7 +45,7 @@ class Room(object):
         x_coord = 0 
         y_coord = 0
 
-        with open(room_file) as room_text:
+        with open("resources/maps/room"+str(room_index)) as room_text:
             in_comment = False
             for line in room_text:
                 if line[:2] == '$$':
@@ -55,7 +60,7 @@ class Room(object):
                         continue
                     else:
                         for char in line:
-                            print("Room.__init__(): creating tile with coords {},{}".format(x_coord, y_coord))
+                            #print("Room.__init__(): creating tile with coords {},{}".format(x_coord, y_coord))
                             if char == 'x':
                                 self.wall_list.append(Wall(x=x_coord, y=y_coord))
                             elif char == '.':
